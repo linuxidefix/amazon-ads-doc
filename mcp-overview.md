@@ -53,3 +53,11 @@ The following are some example prompts and use cases that you can perform using 
 
 * **Create and launch a campaign** in one prompt with requests such as "Create a Sponsored Products campaign in the US and Canada for `[ASIN]` with a $20 budget and `[ASIN]` with a CAD$15 budget."
 * **Scale campaigns to new markets** with prompts such as "Add UK to `[campaign_id]` with a £10 budget."
+
+---
+## Documentation Index & Resources
+
+- **Full Markdown Index**: [README.md](https://raw.githubusercontent.com/linuxidefix/amazon-ads-doc/main/README.md) ([GitHub View](https://github.com/linuxidefix/amazon-ads-doc/blob/main/README.md))
+- **Full HTML Index**: [index.html](https://raw.githubusercontent.com/linuxidefix/amazon-ads-doc/main/index.html) ([GitHub View](https://github.com/linuxidefix/amazon-ads-doc/blob/main/index.html))
+- **OpenAPI Specifications (Tools)**: [Tools Directory](https://raw.githubusercontent.com/linuxidefix/amazon-ads-doc/main/README.md#2-tools--openapi-specifications-17-tools)
+- **Skills Library**: [Skills Directory](https://raw.githubusercontent.com/linuxidefix/amazon-ads-doc/main/README.md#4-skills-library-12-skills)

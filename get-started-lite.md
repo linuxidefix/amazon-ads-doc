@@ -202,3 +202,11 @@ Error: the client initialization failed
 Most likely, this means that your LwA token has expired. Fetch a new one, update your `Authorization` header, and restart your client to create a new session.
 
 If the `/tools` command shows more or fewer than three tools, confirm your `url` ends in `/mcp/lite` and not `/mcp`.
+
+---
+## Documentation Index & Resources
+
+- **Full Markdown Index**: [README.md](https://raw.githubusercontent.com/linuxidefix/amazon-ads-doc/main/README.md) ([GitHub View](https://github.com/linuxidefix/amazon-ads-doc/blob/main/README.md))
+- **Full HTML Index**: [index.html](https://raw.githubusercontent.com/linuxidefix/amazon-ads-doc/main/index.html) ([GitHub View](https://github.com/linuxidefix/amazon-ads-doc/blob/main/index.html))
+- **OpenAPI Specifications (Tools)**: [Tools Directory](https://raw.githubusercontent.com/linuxidefix/amazon-ads-doc/main/README.md#2-tools--openapi-specifications-17-tools)
+- **Skills Library**: [Skills Directory](https://raw.githubusercontent.com/linuxidefix/amazon-ads-doc/main/README.md#4-skills-library-12-skills)
