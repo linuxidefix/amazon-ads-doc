@@ -1,0 +1,84 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "user_invitation",
+    "description": "MCP tools related to user_invitation",
+    "version": "v1"
+  },
+  "paths": {
+    "/mcp/redeem": {
+      "post": {
+        "operationId": "redeem",
+        "description": "Redeem a user invitation to gain access to an advertising account.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/redeemInputSchema"
+              }
+            }
+          }
+        },
+        "tags": [
+          "user_invitation"
+        ]
+      }
+    },
+    "/mcp/get": {
+      "post": {
+        "operationId": "get",
+        "description": "Get details of a specific user invitation by its invitationId (e.g. { pathParameters: { invitationId: \"<id>\" } }). Use user_invitations-list first to obtain invitation IDs. Returns invitation state, permissionSet (role or custom permissions), invited user email, expiration, targetId (account), and termsTypes required before redemption.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/getInputSchema"
+              }
+            }
+          }
+        },
+        "tags": [
+          "user_invitation"
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "redeemInputSchema": {
+        "type": "object",
+        "properties": {
+          "body": {
+            "type": "object",
+            "properties": {
+              "invitationId": {
+                "type": "string",
+                "description": "Identifier of the invitation to redeem"
+              }
+            },
+            "required": [
+              "invitationId"
+            ]
+          }
+        }
+      },
+      "getInputSchema": {
+        "type": "object",
+        "properties": {
+          "pathParameters": {
+            "type": "object",
+            "properties": {
+              "invitationId": {
+                "type": "string",
+                "description": "Identifier of the invitation to fetch"
+              }
+            },
+            "required": [
+              "invitationId"
+            ]
+          }
+        }
+      }
+    }
+  }
+}

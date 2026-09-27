@@ -1,0 +1,116 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "test_accounts",
+    "description": "MCP tools related to test_accounts",
+    "version": "v1"
+  },
+  "paths": {
+    "/mcp/create_test_account": {
+      "post": {
+        "operationId": "create_test_account",
+        "description": "Submit an async test account creation request (e.g. { body: { accountType: \"VENDOR\", countryCode: \"US\" } }). Limit 1 per account type per marketplace. AUTHOR supported in all marketplaces; VENDOR only in US, CA, MX, BR, UK, DE, FR, ES, IT, JP. Returns a requestId — use test_accounts-get_test_accounts to check status.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/create_test_accountInputSchema"
+              }
+            }
+          }
+        },
+        "tags": [
+          "test_accounts"
+        ]
+      }
+    },
+    "/mcp/get_test_accounts": {
+      "post": {
+        "operationId": "get_test_accounts",
+        "description": "Get test account creation status and details. Pass requestId from a previous create call to check that request, or omit to list all test accounts for the current user.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/get_test_accountsInputSchema"
+              }
+            }
+          }
+        },
+        "tags": [
+          "test_accounts"
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "create_test_accountInputSchema": {
+        "type": "object",
+        "properties": {
+          "body": {
+            "type": "object",
+            "properties": {
+              "accountType": {
+                "type": "string",
+                "description": "Type of test account.",
+                "enum": [
+                  "AUTHOR",
+                  "VENDOR"
+                ]
+              },
+              "countryCode": {
+                "type": "string",
+                "description": "Country code of the test account.",
+                "enum": [
+                  "AE",
+                  "AU",
+                  "BE",
+                  "BR",
+                  "CA",
+                  "DE",
+                  "EG",
+                  "ES",
+                  "FR",
+                  "IT",
+                  "JP",
+                  "MX",
+                  "NL",
+                  "PL",
+                  "SA",
+                  "SE",
+                  "SG",
+                  "TR",
+                  "UK",
+                  "US"
+                ]
+              },
+              "accountMetaData": {
+                "type": "object",
+                "description": "Optional metadata for the account (e.g., vendorCode for VENDOR type)."
+              }
+            },
+            "required": [
+              "accountType",
+              "countryCode"
+            ]
+          }
+        }
+      },
+      "get_test_accountsInputSchema": {
+        "type": "object",
+        "properties": {
+          "queryParameters": {
+            "type": "object",
+            "properties": {
+              "requestId": {
+                "type": "string",
+                "description": "Request ID from a previous test account creation request."
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

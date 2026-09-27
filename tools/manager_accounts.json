@@ -1,0 +1,197 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "manager_accounts",
+    "description": "MCP tools related to manager_accounts",
+    "version": "v1"
+  },
+  "paths": {
+    "/mcp/disassociate_accounts": {
+      "post": {
+        "operationId": "disassociate_accounts",
+        "description": "Unlink Amazon Advertising accounts or advertisers from a Manager Account.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/disassociate_accountsInputSchema"
+              }
+            }
+          }
+        },
+        "tags": [
+          "manager_accounts"
+        ]
+      }
+    },
+    "/mcp/get_manager_accounts": {
+      "post": {
+        "operationId": "get_manager_accounts",
+        "description": "Returns all manager accounts that a user has access to, along with metadata for the Amazon Ads accounts linked to each manager account. NOTE: A maximum of 50 linked accounts are returned for each manager account.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/get_manager_accountsInputSchema"
+              }
+            }
+          }
+        },
+        "tags": [
+          "manager_accounts"
+        ]
+      }
+    },
+    "/mcp/associate_accounts": {
+      "post": {
+        "operationId": "associate_accounts",
+        "description": "Link Amazon Advertising accounts or advertisers with a Manager Account.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/associate_accountsInputSchema"
+              }
+            }
+          }
+        },
+        "tags": [
+          "manager_accounts"
+        ]
+      }
+    },
+    "/mcp/create_manager_account": {
+      "post": {
+        "operationId": "create_manager_account",
+        "description": "Creates a new Amazon Advertising Manager account.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/create_manager_accountInputSchema"
+              }
+            }
+          }
+        },
+        "tags": [
+          "manager_accounts"
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "disassociate_accountsInputSchema": {
+        "type": "object",
+        "properties": {
+          "pathParameters": {
+            "type": "object",
+            "properties": {
+              "managerAccountId": {
+                "type": "string",
+                "description": "Id of the Manager Account."
+              }
+            },
+            "required": [
+              "managerAccountId"
+            ]
+          },
+          "body": {
+            "type": "object",
+            "properties": {
+              "accounts": {
+                "type": "array",
+                "description": "List of Advertising accounts or advertisers to unlink from Manager Account. Maximum of 20 accounts/advertisers using any mix of identifiers.",
+                "items": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get_manager_accountsInputSchema": {
+        "type": "object",
+        "properties": {}
+      },
+      "associate_accountsInputSchema": {
+        "type": "object",
+        "properties": {
+          "pathParameters": {
+            "type": "object",
+            "properties": {
+              "managerAccountId": {
+                "type": "string",
+                "description": "Id of the Manager Account."
+              }
+            },
+            "required": [
+              "managerAccountId"
+            ]
+          },
+          "body": {
+            "type": "object",
+            "properties": {
+              "accounts": {
+                "type": "array",
+                "description": "List of Advertising accounts or advertisers to link with Manager Account. Maximum of 20 accounts/advertisers using any mix of identifiers.",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "description": "Id of the Amazon Advertising account."
+                    },
+                    "roles": {
+                      "type": "array",
+                      "description": "The types of role that will exist with the Amazon Advertising account. Depending on account type, the default role will be ENTITY_USER or SELLER_USER. Only one role at a time is currently supported.",
+                      "items": {
+                        "type": "string",
+                        "enum": [
+                          "ENTITY_OWNER",
+                          "ENTITY_USER",
+                          "ENTITY_VIEWER",
+                          "SELLER_USER"
+                        ]
+                      }
+                    },
+                    "type": {
+                      "type": "string",
+                      "description": "The type of the Id.",
+                      "enum": [
+                        "ACCOUNT_ID",
+                        "DSP_ADVERTISER_ID"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "create_manager_accountInputSchema": {
+        "type": "object",
+        "properties": {
+          "body": {
+            "type": "object",
+            "properties": {
+              "managerAccountName": {
+                "type": "string",
+                "description": "Name of the Manager account."
+              },
+              "managerAccountType": {
+                "type": "string",
+                "description": "Type of the Manager account. Use Advertiser if the Manager account will be used for your own products and services, or Agency if you are managing accounts on behalf of your clients.",
+                "enum": [
+                  "Advertiser",
+                  "Agency"
+                ]
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

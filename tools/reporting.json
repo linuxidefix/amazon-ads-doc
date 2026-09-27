@@ -1,0 +1,1294 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "reporting",
+    "description": "MCP tools related to reporting",
+    "version": "v1"
+  },
+  "paths": {
+    "/mcp/create_campaign_report": {
+      "post": {
+        "operationId": "create_campaign_report",
+        "description": "Create a Campaign report.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/create_campaign_reportInputSchema"
+              }
+            }
+          }
+        },
+        "tags": [
+          "reporting"
+        ]
+      }
+    },
+    "/mcp/delete_report": {
+      "post": {
+        "operationId": "delete_report",
+        "description": "Delete a report.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/delete_reportInputSchema"
+              }
+            }
+          }
+        },
+        "tags": [
+          "reporting"
+        ]
+      }
+    },
+    "/mcp/create_report": {
+      "post": {
+        "operationId": "create_report",
+        "description": "Create a report.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/create_reportInputSchema"
+              }
+            }
+          }
+        },
+        "tags": [
+          "reporting"
+        ]
+      }
+    },
+    "/mcp/retrieve_report": {
+      "post": {
+        "operationId": "retrieve_report",
+        "description": "Retrieve a report.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/retrieve_reportInputSchema"
+              }
+            }
+          }
+        },
+        "tags": [
+          "reporting"
+        ]
+      }
+    },
+    "/mcp/create_inventory_report": {
+      "post": {
+        "operationId": "create_inventory_report",
+        "description": "Create an Inventory report.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/create_inventory_reportInputSchema"
+              }
+            }
+          }
+        },
+        "tags": [
+          "reporting"
+        ]
+      }
+    },
+    "/mcp/create_product_report": {
+      "post": {
+        "operationId": "create_product_report",
+        "description": "Create a Product report.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/create_product_reportInputSchema"
+              }
+            }
+          }
+        },
+        "tags": [
+          "reporting"
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "create_campaign_reportInputSchema": {
+        "type": "object",
+        "properties": {
+          "skill": {
+            "type": "object",
+            "description": "Do not auto-generate or infer values for this object. Only populate it when a skill definition explicitly provides the skillName and version to pass. If no skill definition is involved, omit this field entirely.",
+            "properties": {
+              "skillName": {
+                "type": "string"
+              },
+              "version": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "skillName",
+              "version"
+            ]
+          },
+          "body": {
+            "type": "object",
+            "properties": {
+              "reports": {
+                "type": "array",
+                "maxItems": 1,
+                "minItems": 1,
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "format": {
+                      "type": "string",
+                      "description": "Comma-separated values file containing plain text tabular data",
+                      "enum": [
+                        "CSV",
+                        "GZIP_JSON",
+                        "PARTITIONED_CSV",
+                        "PARTITIONED_GZIP_JSON"
+                      ]
+                    },
+                    "periods": {
+                      "type": "array",
+                      "maxItems": 1,
+                      "minItems": 1,
+                      "items": {
+                        "oneOf": [
+                          {
+                            "type": "object",
+                            "properties": {
+                              "datePeriod": {
+                                "type": "object",
+                                "properties": {
+                                  "startDate": {
+                                    "type": "string",
+                                    "format": "date"
+                                  },
+                                  "endDate": {
+                                    "type": "string",
+                                    "format": "date"
+                                  }
+                                },
+                                "required": [
+                                  "endDate",
+                                  "startDate"
+                                ]
+                              }
+                            },
+                            "required": [
+                              "datePeriod"
+                            ]
+                          }
+                        ]
+                      }
+                    },
+                    "query": {
+                      "type": "object",
+                      "properties": {
+                        "filter": {
+                          "$ref": "#/components/schemas/create_campaign_reportInputSchema__CreateFilter"
+                        }
+                      },
+                      "required": []
+                    },
+                    "currencyOfView": {
+                      "type": "string",
+                      "enum": [
+                        "AED",
+                        "ARS",
+                        "AUD",
+                        "AZN",
+                        "BBD",
+                        "BGN",
+                        "BMD",
+                        "BND",
+                        "BRL",
+                        "BSD",
+                        "CAD",
+                        "CHF",
+                        "CLP",
+                        "CNY",
+                        "COP",
+                        "CRC",
+                        "CZK",
+                        "DKK",
+                        "DOP",
+                        "EGP",
+                        "EUR",
+                        "GBP",
+                        "GHS",
+                        "GTQ",
+                        "HKD",
+                        "HUF",
+                        "IDR",
+                        "ILS",
+                        "INR",
+                        "JMD",
+                        "JPY",
+                        "KES",
+                        "KRW",
+                        "KYD",
+                        "KZT",
+                        "LBP",
+                        "LKR",
+                        "MAD",
+                        "MUR",
+                        "MXN",
+                        "MYR",
+                        "NAD",
+                        "NGN",
+                        "NOK",
+                        "NZD",
+                        "PAB",
+                        "PEN",
+                        "PHP",
+                        "PKR",
+                        "PLN",
+                        "QAR",
+                        "RON",
+                        "RUB",
+                        "SAR",
+                        "SEK",
+                        "SGD",
+                        "THB",
+                        "TRY",
+                        "TTD",
+                        "TWD",
+                        "TZS",
+                        "USD",
+                        "UYU",
+                        "VND",
+                        "XAF",
+                        "XCD",
+                        "XOF",
+                        "XPF",
+                        "ZAR"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "format",
+                    "periods",
+                    "query"
+                  ]
+                }
+              },
+              "accessRequestedAccounts": {
+                "type": "array",
+                "maxItems": 2000,
+                "minItems": 1,
+                "items": {
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "advertiserAccountId": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "advertiserAccountId"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "managerAccountId": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "managerAccountId"
+                      ]
+                    }
+                  ]
+                }
+              }
+            },
+            "required": [
+              "accessRequestedAccounts",
+              "reports"
+            ]
+          }
+        }
+      },
+      "create_campaign_reportInputSchema__CreateFilter": {
+        "oneOf": [
+          {
+            "type": "object",
+            "properties": {
+              "and": {
+                "type": "object",
+                "properties": {
+                  "filters": {
+                    "type": "array",
+                    "maxItems": 10,
+                    "minItems": 1,
+                    "items": {
+                      "$ref": "#/components/schemas/create_campaign_reportInputSchema__CreateFilter"
+                    }
+                  }
+                },
+                "required": [
+                  "filters"
+                ]
+              }
+            },
+            "required": [
+              "and"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "on": {
+                "type": "object",
+                "properties": {
+                  "field": {
+                    "type": "string",
+                    "pattern": "^[a-zA-Z0-9]+\\.[a-zA-Z0-9]+$"
+                  },
+                  "comparisonOperator": {
+                    "type": "string",
+                    "enum": [
+                      "EQUALS",
+                      "IN"
+                    ]
+                  },
+                  "not": {
+                    "type": "boolean"
+                  },
+                  "values": {
+                    "type": "array",
+                    "maxItems": 2000,
+                    "minItems": 1,
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "required": [
+                  "comparisonOperator",
+                  "field",
+                  "not",
+                  "values"
+                ]
+              }
+            },
+            "required": [
+              "on"
+            ]
+          }
+        ]
+      },
+      "delete_reportInputSchema": {
+        "type": "object",
+        "properties": {
+          "skill": {
+            "type": "object",
+            "description": "Do not auto-generate or infer values for this object. Only populate it when a skill definition explicitly provides the skillName and version to pass. If no skill definition is involved, omit this field entirely.",
+            "properties": {
+              "skillName": {
+                "type": "string"
+              },
+              "version": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "skillName",
+              "version"
+            ]
+          },
+          "body": {
+            "type": "object",
+            "properties": {
+              "reportIds": {
+                "type": "array",
+                "maxItems": 1,
+                "minItems": 1,
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "required": [
+              "reportIds"
+            ]
+          }
+        }
+      },
+      "create_reportInputSchema": {
+        "type": "object",
+        "properties": {
+          "skill": {
+            "type": "object",
+            "description": "Do not auto-generate or infer values for this object. Only populate it when a skill definition explicitly provides the skillName and version to pass. If no skill definition is involved, omit this field entirely.",
+            "properties": {
+              "skillName": {
+                "type": "string"
+              },
+              "version": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "skillName",
+              "version"
+            ]
+          },
+          "body": {
+            "type": "object",
+            "properties": {
+              "reports": {
+                "type": "array",
+                "maxItems": 1,
+                "minItems": 1,
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "format": {
+                      "type": "string",
+                      "enum": [
+                        "CSV",
+                        "GZIP_JSON",
+                        "PARTITIONED_CSV",
+                        "PARTITIONED_GZIP_JSON"
+                      ]
+                    },
+                    "periods": {
+                      "type": "array",
+                      "maxItems": 1,
+                      "minItems": 1,
+                      "items": {
+                        "oneOf": [
+                          {
+                            "type": "object",
+                            "properties": {
+                              "datePeriod": {
+                                "type": "object",
+                                "properties": {
+                                  "startDate": {
+                                    "type": "string",
+                                    "format": "date"
+                                  },
+                                  "endDate": {
+                                    "type": "string",
+                                    "format": "date"
+                                  }
+                                },
+                                "required": [
+                                  "endDate",
+                                  "startDate"
+                                ]
+                              }
+                            },
+                            "required": [
+                              "datePeriod"
+                            ]
+                          }
+                        ]
+                      }
+                    },
+                    "query": {
+                      "type": "object",
+                      "properties": {
+                        "fields": {
+                          "type": "array",
+                          "maxItems": 1000,
+                          "minItems": 1,
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "filter": {
+                          "$ref": "#/components/schemas/create_reportInputSchema__CreateFilter"
+                        }
+                      },
+                      "required": [
+                        "fields"
+                      ]
+                    },
+                    "currencyOfView": {
+                      "type": "string",
+                      "enum": [
+                        "AED",
+                        "ARS",
+                        "AUD",
+                        "AZN",
+                        "BBD",
+                        "BGN",
+                        "BMD",
+                        "BND",
+                        "BRL",
+                        "BSD",
+                        "CAD",
+                        "CHF",
+                        "CLP",
+                        "CNY",
+                        "COP",
+                        "CRC",
+                        "CZK",
+                        "DKK",
+                        "DOP",
+                        "EGP",
+                        "EUR",
+                        "GBP",
+                        "GHS",
+                        "GTQ",
+                        "HKD",
+                        "HUF",
+                        "IDR",
+                        "ILS",
+                        "INR",
+                        "JMD",
+                        "JPY",
+                        "KES",
+                        "KRW",
+                        "KYD",
+                        "KZT",
+                        "LBP",
+                        "LKR",
+                        "MAD",
+                        "MUR",
+                        "MXN",
+                        "MYR",
+                        "NAD",
+                        "NGN",
+                        "NOK",
+                        "NZD",
+                        "PAB",
+                        "PEN",
+                        "PHP",
+                        "PKR",
+                        "PLN",
+                        "QAR",
+                        "RON",
+                        "RUB",
+                        "SAR",
+                        "SEK",
+                        "SGD",
+                        "THB",
+                        "TRY",
+                        "TTD",
+                        "TWD",
+                        "TZS",
+                        "USD",
+                        "UYU",
+                        "VND",
+                        "XAF",
+                        "XCD",
+                        "XOF",
+                        "XPF",
+                        "ZAR"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "format",
+                    "periods",
+                    "query"
+                  ]
+                }
+              },
+              "accessRequestedAccounts": {
+                "type": "array",
+                "maxItems": 2000,
+                "minItems": 1,
+                "items": {
+                  "description": "| ReportCreateAccessRequestedAccountItem | Description |\n| --- | --- |\n| `advertiserAccountId` | ADSP Regional Account or Global Account |\n| `managerAccountId` | Manager Account |",
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "advertiserAccountId": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "advertiserAccountId"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "managerAccountId": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "managerAccountId"
+                      ]
+                    }
+                  ]
+                }
+              }
+            },
+            "required": [
+              "accessRequestedAccounts",
+              "reports"
+            ]
+          }
+        }
+      },
+      "create_reportInputSchema__CreateFilter": {
+        "oneOf": [
+          {
+            "type": "object",
+            "properties": {
+              "and": {
+                "type": "object",
+                "properties": {
+                  "filters": {
+                    "type": "array",
+                    "maxItems": 10,
+                    "minItems": 1,
+                    "items": {
+                      "$ref": "#/components/schemas/create_reportInputSchema__CreateFilter"
+                    }
+                  }
+                },
+                "required": [
+                  "filters"
+                ]
+              }
+            },
+            "required": [
+              "and"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "on": {
+                "type": "object",
+                "properties": {
+                  "field": {
+                    "type": "string",
+                    "pattern": "^[a-zA-Z0-9]+\\.[a-zA-Z0-9]+$"
+                  },
+                  "comparisonOperator": {
+                    "type": "string",
+                    "enum": [
+                      "EQUALS",
+                      "IN"
+                    ]
+                  },
+                  "not": {
+                    "type": "boolean"
+                  },
+                  "values": {
+                    "type": "array",
+                    "maxItems": 2000,
+                    "minItems": 1,
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "required": [
+                  "comparisonOperator",
+                  "field",
+                  "not",
+                  "values"
+                ]
+              }
+            },
+            "required": [
+              "on"
+            ]
+          }
+        ]
+      },
+      "retrieve_reportInputSchema": {
+        "type": "object",
+        "properties": {
+          "skill": {
+            "type": "object",
+            "description": "Do not auto-generate or infer values for this object. Only populate it when a skill definition explicitly provides the skillName and version to pass. If no skill definition is involved, omit this field entirely.",
+            "properties": {
+              "skillName": {
+                "type": "string"
+              },
+              "version": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "skillName",
+              "version"
+            ]
+          },
+          "body": {
+            "type": "object",
+            "properties": {
+              "reportIds": {
+                "type": "array",
+                "maxItems": 1,
+                "minItems": 1,
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "required": [
+              "reportIds"
+            ]
+          }
+        }
+      },
+      "create_inventory_reportInputSchema": {
+        "type": "object",
+        "properties": {
+          "skill": {
+            "type": "object",
+            "description": "Do not auto-generate or infer values for this object. Only populate it when a skill definition explicitly provides the skillName and version to pass. If no skill definition is involved, omit this field entirely.",
+            "properties": {
+              "skillName": {
+                "type": "string"
+              },
+              "version": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "skillName",
+              "version"
+            ]
+          },
+          "body": {
+            "type": "object",
+            "properties": {
+              "reports": {
+                "type": "array",
+                "maxItems": 1,
+                "minItems": 1,
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "format": {
+                      "type": "string",
+                      "description": "Comma-separated values file containing plain text tabular data",
+                      "enum": [
+                        "CSV",
+                        "GZIP_JSON",
+                        "PARTITIONED_CSV",
+                        "PARTITIONED_GZIP_JSON"
+                      ]
+                    },
+                    "periods": {
+                      "type": "array",
+                      "maxItems": 1,
+                      "minItems": 1,
+                      "items": {
+                        "oneOf": [
+                          {
+                            "type": "object",
+                            "properties": {
+                              "datePeriod": {
+                                "type": "object",
+                                "properties": {
+                                  "startDate": {
+                                    "type": "string",
+                                    "format": "date"
+                                  },
+                                  "endDate": {
+                                    "type": "string",
+                                    "format": "date"
+                                  }
+                                },
+                                "required": [
+                                  "endDate",
+                                  "startDate"
+                                ]
+                              }
+                            },
+                            "required": [
+                              "datePeriod"
+                            ]
+                          }
+                        ]
+                      }
+                    },
+                    "query": {
+                      "type": "object",
+                      "properties": {
+                        "filter": {
+                          "$ref": "#/components/schemas/create_inventory_reportInputSchema__CreateFilter"
+                        }
+                      },
+                      "required": []
+                    },
+                    "currencyOfView": {
+                      "type": "string",
+                      "enum": [
+                        "AED",
+                        "ARS",
+                        "AUD",
+                        "AZN",
+                        "BBD",
+                        "BGN",
+                        "BMD",
+                        "BND",
+                        "BRL",
+                        "BSD",
+                        "CAD",
+                        "CHF",
+                        "CLP",
+                        "CNY",
+                        "COP",
+                        "CRC",
+                        "CZK",
+                        "DKK",
+                        "DOP",
+                        "EGP",
+                        "EUR",
+                        "GBP",
+                        "GHS",
+                        "GTQ",
+                        "HKD",
+                        "HUF",
+                        "IDR",
+                        "ILS",
+                        "INR",
+                        "JMD",
+                        "JPY",
+                        "KES",
+                        "KRW",
+                        "KYD",
+                        "KZT",
+                        "LBP",
+                        "LKR",
+                        "MAD",
+                        "MUR",
+                        "MXN",
+                        "MYR",
+                        "NAD",
+                        "NGN",
+                        "NOK",
+                        "NZD",
+                        "PAB",
+                        "PEN",
+                        "PHP",
+                        "PKR",
+                        "PLN",
+                        "QAR",
+                        "RON",
+                        "RUB",
+                        "SAR",
+                        "SEK",
+                        "SGD",
+                        "THB",
+                        "TRY",
+                        "TTD",
+                        "TWD",
+                        "TZS",
+                        "USD",
+                        "UYU",
+                        "VND",
+                        "XAF",
+                        "XCD",
+                        "XOF",
+                        "XPF",
+                        "ZAR"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "format",
+                    "periods",
+                    "query"
+                  ]
+                }
+              },
+              "accessRequestedAccounts": {
+                "type": "array",
+                "maxItems": 2000,
+                "minItems": 1,
+                "items": {
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "advertiserAccountId": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "advertiserAccountId"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "managerAccountId": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "managerAccountId"
+                      ]
+                    }
+                  ]
+                }
+              }
+            },
+            "required": [
+              "accessRequestedAccounts",
+              "reports"
+            ]
+          }
+        }
+      },
+      "create_inventory_reportInputSchema__CreateFilter": {
+        "oneOf": [
+          {
+            "type": "object",
+            "properties": {
+              "and": {
+                "type": "object",
+                "properties": {
+                  "filters": {
+                    "type": "array",
+                    "maxItems": 10,
+                    "minItems": 1,
+                    "items": {
+                      "$ref": "#/components/schemas/create_inventory_reportInputSchema__CreateFilter"
+                    }
+                  }
+                },
+                "required": [
+                  "filters"
+                ]
+              }
+            },
+            "required": [
+              "and"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "on": {
+                "type": "object",
+                "properties": {
+                  "field": {
+                    "type": "string",
+                    "pattern": "^[a-zA-Z0-9]+\\.[a-zA-Z0-9]+$"
+                  },
+                  "comparisonOperator": {
+                    "type": "string",
+                    "enum": [
+                      "EQUALS",
+                      "IN"
+                    ]
+                  },
+                  "not": {
+                    "type": "boolean"
+                  },
+                  "values": {
+                    "type": "array",
+                    "maxItems": 2000,
+                    "minItems": 1,
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "required": [
+                  "comparisonOperator",
+                  "field",
+                  "not",
+                  "values"
+                ]
+              }
+            },
+            "required": [
+              "on"
+            ]
+          }
+        ]
+      },
+      "create_product_reportInputSchema": {
+        "type": "object",
+        "properties": {
+          "skill": {
+            "type": "object",
+            "description": "Do not auto-generate or infer values for this object. Only populate it when a skill definition explicitly provides the skillName and version to pass. If no skill definition is involved, omit this field entirely.",
+            "properties": {
+              "skillName": {
+                "type": "string"
+              },
+              "version": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "skillName",
+              "version"
+            ]
+          },
+          "body": {
+            "type": "object",
+            "properties": {
+              "reports": {
+                "type": "array",
+                "maxItems": 1,
+                "minItems": 1,
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "format": {
+                      "type": "string",
+                      "description": "Comma-separated values file containing plain text tabular data",
+                      "enum": [
+                        "CSV",
+                        "GZIP_JSON",
+                        "PARTITIONED_CSV",
+                        "PARTITIONED_GZIP_JSON"
+                      ]
+                    },
+                    "periods": {
+                      "type": "array",
+                      "maxItems": 1,
+                      "minItems": 1,
+                      "items": {
+                        "oneOf": [
+                          {
+                            "type": "object",
+                            "properties": {
+                              "datePeriod": {
+                                "type": "object",
+                                "properties": {
+                                  "startDate": {
+                                    "type": "string",
+                                    "format": "date"
+                                  },
+                                  "endDate": {
+                                    "type": "string",
+                                    "format": "date"
+                                  }
+                                },
+                                "required": [
+                                  "endDate",
+                                  "startDate"
+                                ]
+                              }
+                            },
+                            "required": [
+                              "datePeriod"
+                            ]
+                          }
+                        ]
+                      }
+                    },
+                    "query": {
+                      "type": "object",
+                      "properties": {
+                        "filter": {
+                          "$ref": "#/components/schemas/create_product_reportInputSchema__CreateFilter"
+                        }
+                      },
+                      "required": []
+                    },
+                    "currencyOfView": {
+                      "type": "string",
+                      "enum": [
+                        "AED",
+                        "ARS",
+                        "AUD",
+                        "AZN",
+                        "BBD",
+                        "BGN",
+                        "BMD",
+                        "BND",
+                        "BRL",
+                        "BSD",
+                        "CAD",
+                        "CHF",
+                        "CLP",
+                        "CNY",
+                        "COP",
+                        "CRC",
+                        "CZK",
+                        "DKK",
+                        "DOP",
+                        "EGP",
+                        "EUR",
+                        "GBP",
+                        "GHS",
+                        "GTQ",
+                        "HKD",
+                        "HUF",
+                        "IDR",
+                        "ILS",
+                        "INR",
+                        "JMD",
+                        "JPY",
+                        "KES",
+                        "KRW",
+                        "KYD",
+                        "KZT",
+                        "LBP",
+                        "LKR",
+                        "MAD",
+                        "MUR",
+                        "MXN",
+                        "MYR",
+                        "NAD",
+                        "NGN",
+                        "NOK",
+                        "NZD",
+                        "PAB",
+                        "PEN",
+                        "PHP",
+                        "PKR",
+                        "PLN",
+                        "QAR",
+                        "RON",
+                        "RUB",
+                        "SAR",
+                        "SEK",
+                        "SGD",
+                        "THB",
+                        "TRY",
+                        "TTD",
+                        "TWD",
+                        "TZS",
+                        "USD",
+                        "UYU",
+                        "VND",
+                        "XAF",
+                        "XCD",
+                        "XOF",
+                        "XPF",
+                        "ZAR"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "format",
+                    "periods",
+                    "query"
+                  ]
+                }
+              },
+              "accessRequestedAccounts": {
+                "type": "array",
+                "maxItems": 2000,
+                "minItems": 1,
+                "items": {
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "advertiserAccountId": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "advertiserAccountId"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "managerAccountId": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "managerAccountId"
+                      ]
+                    }
+                  ]
+                }
+              }
+            },
+            "required": [
+              "accessRequestedAccounts",
+              "reports"
+            ]
+          }
+        }
+      },
+      "create_product_reportInputSchema__CreateFilter": {
+        "oneOf": [
+          {
+            "type": "object",
+            "properties": {
+              "and": {
+                "type": "object",
+                "properties": {
+                  "filters": {
+                    "type": "array",
+                    "maxItems": 10,
+                    "minItems": 1,
+                    "items": {
+                      "$ref": "#/components/schemas/create_product_reportInputSchema__CreateFilter"
+                    }
+                  }
+                },
+                "required": [
+                  "filters"
+                ]
+              }
+            },
+            "required": [
+              "and"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "on": {
+                "type": "object",
+                "properties": {
+                  "field": {
+                    "type": "string",
+                    "pattern": "^[a-zA-Z0-9]+\\.[a-zA-Z0-9]+$"
+                  },
+                  "comparisonOperator": {
+                    "type": "string",
+                    "enum": [
+                      "EQUALS",
+                      "IN"
+                    ]
+                  },
+                  "not": {
+                    "type": "boolean"
+                  },
+                  "values": {
+                    "type": "array",
+                    "maxItems": 2000,
+                    "minItems": 1,
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "required": [
+                  "comparisonOperator",
+                  "field",
+                  "not",
+                  "values"
+                ]
+              }
+            },
+            "required": [
+              "on"
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

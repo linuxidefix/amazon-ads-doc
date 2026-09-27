@@ -1,0 +1,205 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "advertiser_product_group_eligibility",
+    "description": "MCP tools related to advertiser_product_group_eligibility",
+    "version": "v1"
+  },
+  "paths": {
+    "/mcp/query": {
+      "post": {
+        "operationId": "query",
+        "description": "Query requests for advertiser product group eligibility based on advertiser account ID.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/queryInputSchema"
+              }
+            }
+          }
+        },
+        "tags": [
+          "advertiser_product_group_eligibility"
+        ]
+      }
+    },
+    "/mcp/create": {
+      "post": {
+        "operationId": "create",
+        "description": "Create request for specific advertiser product group eligibility (e.g., ADSP).",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/createInputSchema"
+              }
+            }
+          }
+        },
+        "tags": [
+          "advertiser_product_group_eligibility"
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "queryInputSchema": {
+        "type": "object",
+        "properties": {
+          "body": {
+            "type": "object",
+            "properties": {
+              "accessRequestedAccount": {
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "advertiserAccountId": {
+                        "type": "string",
+                        "description": "The identifier of an Amazon Ads Advertiser Account."
+                      }
+                    },
+                    "required": [
+                      "advertiserAccountId"
+                    ]
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "profileId": {
+                        "type": "string",
+                        "description": "The identifier of a profile associated with the advertiser account. Use GET method on Profiles resource to list profiles associated with the access token passed in the HTTP Authorization header and choose profile id profileId from the response to pass it as input."
+                      }
+                    },
+                    "required": [
+                      "profileId"
+                    ]
+                  }
+                ]
+              },
+              "maxResults": {
+                "type": "number",
+                "description": "Max results (0-10)",
+                "minimum": 0,
+                "maximum": 10
+              },
+              "nextToken": {
+                "type": "string",
+                "description": "Pagination token"
+              },
+              "statusFilter": {
+                "type": "object",
+                "properties": {
+                  "include": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "enum": [
+                        "APPROVED",
+                        "PENDING",
+                        "REJECTED"
+                      ]
+                    },
+                    "maxItems": 1
+                  }
+                },
+                "required": [
+                  "include"
+                ]
+              }
+            },
+            "required": [
+              "accessRequestedAccount"
+            ]
+          }
+        }
+      },
+      "createInputSchema": {
+        "type": "object",
+        "properties": {
+          "body": {
+            "type": "object",
+            "properties": {
+              "accessRequestedAccount": {
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "advertiserAccountId": {
+                        "type": "string",
+                        "description": "The identifier of an Amazon Ads Advertiser Account."
+                      }
+                    },
+                    "required": [
+                      "advertiserAccountId"
+                    ]
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "profileId": {
+                        "type": "string",
+                        "description": "The identifier of a profile associated with the advertiser account. Use GET method on Profiles resource to list profiles associated with the access token passed in the HTTP Authorization header and choose profile id profileId from the response to pass it as input."
+                      }
+                    },
+                    "required": [
+                      "profileId"
+                    ]
+                  }
+                ]
+              },
+              "advertiserProductGroupEligibilities": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "adProductGroup": {
+                      "type": "string",
+                      "description": "Group of ad products to check eligibility for.",
+                      "enum": [
+                        "ADSP"
+                      ]
+                    },
+                    "rejectedReasonDetail": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "code": {
+                            "type": "string",
+                            "enum": [
+                              "BUSINESS_VERIFICATION_FAILED",
+                              "SALES_VERIFICATION_FAILED"
+                            ]
+                          },
+                          "description": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "code",
+                          "description"
+                        ]
+                      },
+                      "maxItems": 2
+                    }
+                  },
+                  "required": [
+                    "adProductGroup"
+                  ]
+                },
+                "minItems": 1,
+                "maxItems": 1
+              }
+            },
+            "required": [
+              "accessRequestedAccount"
+            ]
+          }
+        }
+      }
+    }
+  }
+}

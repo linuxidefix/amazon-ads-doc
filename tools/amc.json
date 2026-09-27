@@ -1,0 +1,1005 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "amc",
+    "description": "MCP tools related to amc",
+    "version": "v1"
+  },
+  "paths": {
+    "/mcp/get_workflows": {
+      "post": {
+        "operationId": "get_workflows",
+        "description": "Returns a list of Amazon Marketing Cloud (AMC) workflows for the given instance and AMC Account",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/get_workflowsInputSchema"
+              }
+            }
+          }
+        },
+        "tags": [
+          "amc"
+        ]
+      }
+    },
+    "/mcp/get_data_sources": {
+      "post": {
+        "operationId": "get_data_sources",
+        "description": "Returns a list of Amazon Marketing Cloud (AMC) data sources for a given instance and AMC Account",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/get_data_sourcesInputSchema"
+              }
+            }
+          }
+        },
+        "tags": [
+          "amc"
+        ]
+      }
+    },
+    "/mcp/delete_workflow": {
+      "post": {
+        "operationId": "delete_workflow",
+        "description": "Deletes the specified Amazon Marketing Cloud (AMC) workflow by id. Workflows are defined as a set of operations that take previously defined data sources as input and use them to generate reports.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/delete_workflowInputSchema"
+              }
+            }
+          }
+        },
+        "tags": [
+          "amc"
+        ]
+      }
+    },
+    "/mcp/get_workflow": {
+      "post": {
+        "operationId": "get_workflow",
+        "description": "Gets the requested Amazon Marketing Cloud (AMC) workflow by id. Workflows are defined as a set of operations that take previously defined data sources as input and use them to generate reports.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/get_workflowInputSchema"
+              }
+            }
+          }
+        },
+        "tags": [
+          "amc"
+        ]
+      }
+    },
+    "/mcp/create_workflow": {
+      "post": {
+        "operationId": "create_workflow",
+        "description": "Creates a new Amazon Marketing Cloud (AMC) workflow that can be used to generate reports.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/create_workflowInputSchema"
+              }
+            }
+          }
+        },
+        "tags": [
+          "amc"
+        ]
+      }
+    },
+    "/mcp/get_data_source": {
+      "post": {
+        "operationId": "get_data_source",
+        "description": "Gets the requested Amazon Marketing Cloud (AMC) data source by id. Data sources can be used as input for reporting workflows. Each data source has a flat schema consisting of a list of columns that each have a name, a data type, and a column typeof metric or dimension.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/get_data_sourceInputSchema"
+              }
+            }
+          }
+        },
+        "tags": [
+          "amc"
+        ]
+      }
+    },
+    "/mcp/get_workflow_execution_download_url": {
+      "post": {
+        "operationId": "get_workflow_execution_download_url",
+        "description": "Retrieves pre-signed url for downloading Amazon Marketing Cloud (AMC) workflow execution results from S3",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/get_workflow_execution_download_urlInputSchema"
+              }
+            }
+          }
+        },
+        "tags": [
+          "amc"
+        ]
+      }
+    },
+    "/mcp/execute_query": {
+      "post": {
+        "operationId": "execute_query",
+        "description": "Executes an ad-hoc SQL query on Amazon Marketing Cloud (AMC) without requiring a pre-existing workflow.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/execute_queryInputSchema"
+              }
+            }
+          }
+        },
+        "tags": [
+          "amc"
+        ]
+      }
+    },
+    "/mcp/execute_workflow": {
+      "post": {
+        "operationId": "execute_workflow",
+        "description": "Creates a new, ad-hoc execution of an existing Amazon Marketing Cloud (AMC) workflow",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/execute_workflowInputSchema"
+              }
+            }
+          }
+        },
+        "tags": [
+          "amc"
+        ]
+      }
+    },
+    "/mcp/get_workflow_execution_status": {
+      "post": {
+        "operationId": "get_workflow_execution_status",
+        "description": "Gets status information about the requested Amazon Marketing Cloud (AMC) workflow execution",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/get_workflow_execution_statusInputSchema"
+              }
+            }
+          }
+        },
+        "tags": [
+          "amc"
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "get_workflowsInputSchema": {
+        "type": "object",
+        "properties": {
+          "skill": {
+            "type": "object",
+            "description": "Do not auto-generate or infer values for this object. Only populate it when a skill definition explicitly provides the skillName and version to pass. If no skill definition is involved, omit this field entirely.",
+            "properties": {
+              "skillName": {
+                "type": "string"
+              },
+              "version": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "skillName",
+              "version"
+            ]
+          },
+          "pathParameters": {
+            "type": "object",
+            "properties": {
+              "amcInstanceId": {
+                "type": "string",
+                "description": "The AMC instance ID"
+              }
+            },
+            "required": [
+              "amcInstanceId"
+            ]
+          },
+          "queryParameters": {
+            "type": "object",
+            "properties": {
+              "nextToken": {
+                "type": "string"
+              },
+              "limit": {
+                "type": "integer"
+              }
+            }
+          },
+          "body": {
+            "type": "object",
+            "properties": {
+              "accessRequestedAccount": {
+                "properties": {
+                  "amcAccountId": {
+                    "type": "string",
+                    "description": "The AMC Account ID. Example value: ENTITYABC123XYZ789."
+                  },
+                  "marketplaceId": {
+                    "type": "string",
+                    "description": "The Marketplace ID"
+                  }
+                },
+                "required": [
+                  "amcAccountId",
+                  "marketplaceId"
+                ]
+              }
+            },
+            "required": [
+              "accessRequestedAccount"
+            ]
+          }
+        },
+        "required": [
+          "pathParameters",
+          "body"
+        ]
+      },
+      "get_data_sourcesInputSchema": {
+        "type": "object",
+        "properties": {
+          "skill": {
+            "type": "object",
+            "description": "Do not auto-generate or infer values for this object. Only populate it when a skill definition explicitly provides the skillName and version to pass. If no skill definition is involved, omit this field entirely.",
+            "properties": {
+              "skillName": {
+                "type": "string"
+              },
+              "version": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "skillName",
+              "version"
+            ]
+          },
+          "pathParameters": {
+            "type": "object",
+            "properties": {
+              "amcInstanceId": {
+                "type": "string",
+                "description": "The AMC instance ID"
+              }
+            },
+            "required": [
+              "amcInstanceId"
+            ]
+          },
+          "queryParameters": {
+            "type": "object",
+            "properties": {
+              "nextToken": {
+                "type": "string"
+              },
+              "limit": {
+                "type": "integer"
+              }
+            }
+          },
+          "body": {
+            "type": "object",
+            "properties": {
+              "accessRequestedAccount": {
+                "properties": {
+                  "amcAccountId": {
+                    "type": "string",
+                    "description": "The AMC Account ID. Example value: ENTITYABC123XYZ789."
+                  },
+                  "marketplaceId": {
+                    "type": "string",
+                    "description": "The Marketplace ID"
+                  }
+                },
+                "required": [
+                  "amcAccountId",
+                  "marketplaceId"
+                ]
+              }
+            },
+            "required": [
+              "accessRequestedAccount"
+            ]
+          }
+        },
+        "required": [
+          "pathParameters",
+          "body"
+        ]
+      },
+      "delete_workflowInputSchema": {
+        "type": "object",
+        "properties": {
+          "skill": {
+            "type": "object",
+            "description": "Do not auto-generate or infer values for this object. Only populate it when a skill definition explicitly provides the skillName and version to pass. If no skill definition is involved, omit this field entirely.",
+            "properties": {
+              "skillName": {
+                "type": "string"
+              },
+              "version": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "skillName",
+              "version"
+            ]
+          },
+          "pathParameters": {
+            "type": "object",
+            "properties": {
+              "amcInstanceId": {
+                "type": "string",
+                "description": "The AMC instance ID"
+              },
+              "workflowId": {
+                "type": "string",
+                "description": "The workflow ID"
+              }
+            },
+            "required": [
+              "amcInstanceId",
+              "workflowId"
+            ]
+          },
+          "body": {
+            "type": "object",
+            "properties": {
+              "accessRequestedAccount": {
+                "type": "object",
+                "properties": {
+                  "amcAccountId": {
+                    "type": "string",
+                    "description": "The AMC Account ID. Example value: ENTITYABC123XYZ789."
+                  },
+                  "marketplaceId": {
+                    "type": "string",
+                    "description": "The Marketplace ID"
+                  }
+                },
+                "required": [
+                  "amcAccountId",
+                  "marketplaceId"
+                ]
+              }
+            },
+            "required": [
+              "accessRequestedAccount"
+            ]
+          }
+        },
+        "required": [
+          "pathParameters",
+          "body"
+        ]
+      },
+      "get_workflowInputSchema": {
+        "type": "object",
+        "properties": {
+          "skill": {
+            "type": "object",
+            "description": "Do not auto-generate or infer values for this object. Only populate it when a skill definition explicitly provides the skillName and version to pass. If no skill definition is involved, omit this field entirely.",
+            "properties": {
+              "skillName": {
+                "type": "string"
+              },
+              "version": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "skillName",
+              "version"
+            ]
+          },
+          "pathParameters": {
+            "type": "object",
+            "properties": {
+              "amcInstanceId": {
+                "type": "string",
+                "description": "The AMC instance ID"
+              },
+              "workflowId": {
+                "type": "string",
+                "description": "The workflow ID"
+              }
+            },
+            "required": [
+              "amcInstanceId",
+              "workflowId"
+            ]
+          },
+          "body": {
+            "type": "object",
+            "properties": {
+              "accessRequestedAccount": {
+                "properties": {
+                  "amcAccountId": {
+                    "type": "string",
+                    "description": "The AMC Account ID. Example value: ENTITYABC123XYZ789."
+                  },
+                  "marketplaceId": {
+                    "type": "string",
+                    "description": "The Marketplace ID"
+                  }
+                },
+                "required": [
+                  "amcAccountId",
+                  "marketplaceId"
+                ]
+              }
+            },
+            "required": [
+              "accessRequestedAccount"
+            ]
+          }
+        },
+        "required": [
+          "pathParameters",
+          "body"
+        ]
+      },
+      "create_workflowInputSchema": {
+        "type": "object",
+        "properties": {
+          "skill": {
+            "type": "object",
+            "description": "Do not auto-generate or infer values for this object. Only populate it when a skill definition explicitly provides the skillName and version to pass. If no skill definition is involved, omit this field entirely.",
+            "properties": {
+              "skillName": {
+                "type": "string"
+              },
+              "version": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "skillName",
+              "version"
+            ]
+          },
+          "pathParameters": {
+            "type": "object",
+            "properties": {
+              "amcInstanceId": {
+                "type": "string",
+                "description": "The AMC instance ID"
+              }
+            },
+            "required": [
+              "amcInstanceId"
+            ]
+          },
+          "body": {
+            "type": "object",
+            "properties": {
+              "accessRequestedAccount": {
+                "properties": {
+                  "amcAccountId": {
+                    "type": "string",
+                    "description": "The AMC Account ID. Example value: ENTITYABC123XYZ789."
+                  },
+                  "marketplaceId": {
+                    "type": "string",
+                    "description": "The Marketplace ID"
+                  }
+                },
+                "required": [
+                  "amcAccountId",
+                  "marketplaceId"
+                ]
+              },
+              "workflowId": {
+                "type": "string",
+                "description": "User-supplied ID of the workflow"
+              },
+              "sqlQuery": {
+                "type": "string",
+                "description": "The SQL query to run to produce output for the workflow"
+              },
+              "inputParameters": {
+                "maxItems": 100,
+                "minItems": 0,
+                "type": "array",
+                "description": "Defines the parameters that can be referenced by workflow definition. If workflow references a parameter not defined here the compilation fails.",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "columnType": {
+                      "type": "string",
+                      "description": "The type of the column corresponding to the parameter.",
+                      "enum": [
+                        "METRIC",
+                        "DIMENSION"
+                      ]
+                    },
+                    "dataType": {
+                      "type": "string",
+                      "description": "The data type of the parameter corresponding to the data type of a column.",
+                      "enum": [
+                        "BINARY",
+                        "BOOLEAN",
+                        "BYTE",
+                        "CALENDAR_INTERVAL",
+                        "DATE",
+                        "DECIMAL",
+                        "DOUBLE",
+                        "FLOAT",
+                        "INTEGER",
+                        "LONG",
+                        "SHORT",
+                        "STRING",
+                        "TIMESTAMP"
+                      ]
+                    },
+                    "defaultValue": {
+                      "type": "string",
+                      "description": "The value to assign to the parameter if no value is provided."
+                    },
+                    "description": {
+                      "type": "string",
+                      "description": "The human-readable description of what the parameter is used for."
+                    },
+                    "displayName": {
+                      "type": "string",
+                      "description": "The human-readable name of the parameter."
+                    },
+                    "name": {
+                      "type": "string",
+                      "description": "The name of the parameter used as a variable in SQL."
+                    }
+                  },
+                  "required": [
+                    "columnType",
+                    "dataType",
+                    "defaultValue",
+                    "description",
+                    "name"
+                  ]
+                }
+              }
+            },
+            "required": [
+              "accessRequestedAccount",
+              "workflowId",
+              "sqlQuery"
+            ]
+          }
+        },
+        "required": [
+          "pathParameters",
+          "body"
+        ]
+      },
+      "get_data_sourceInputSchema": {
+        "type": "object",
+        "properties": {
+          "skill": {
+            "type": "object",
+            "description": "Do not auto-generate or infer values for this object. Only populate it when a skill definition explicitly provides the skillName and version to pass. If no skill definition is involved, omit this field entirely.",
+            "properties": {
+              "skillName": {
+                "type": "string"
+              },
+              "version": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "skillName",
+              "version"
+            ]
+          },
+          "pathParameters": {
+            "type": "object",
+            "properties": {
+              "amcInstanceId": {
+                "type": "string",
+                "description": "The AMC instance ID"
+              },
+              "dataSourceId": {
+                "type": "string",
+                "description": "The data source ID"
+              }
+            },
+            "required": [
+              "amcInstanceId",
+              "dataSourceId"
+            ]
+          },
+          "body": {
+            "type": "object",
+            "properties": {
+              "accessRequestedAccount": {
+                "properties": {
+                  "amcAccountId": {
+                    "type": "string",
+                    "description": "The AMC Account ID. Example value: ENTITYABC123XYZ789."
+                  },
+                  "marketplaceId": {
+                    "type": "string",
+                    "description": "The Marketplace ID"
+                  }
+                },
+                "required": [
+                  "amcAccountId",
+                  "marketplaceId"
+                ]
+              }
+            },
+            "required": [
+              "accessRequestedAccount"
+            ]
+          }
+        },
+        "required": [
+          "pathParameters",
+          "body"
+        ]
+      },
+      "get_workflow_execution_download_urlInputSchema": {
+        "type": "object",
+        "properties": {
+          "skill": {
+            "type": "object",
+            "description": "Do not auto-generate or infer values for this object. Only populate it when a skill definition explicitly provides the skillName and version to pass. If no skill definition is involved, omit this field entirely.",
+            "properties": {
+              "skillName": {
+                "type": "string"
+              },
+              "version": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "skillName",
+              "version"
+            ]
+          },
+          "pathParameters": {
+            "type": "object",
+            "properties": {
+              "amcInstanceId": {
+                "type": "string",
+                "description": "The AMC instance ID"
+              },
+              "workflowExecutionId": {
+                "type": "string",
+                "description": "The workflow execution ID"
+              }
+            },
+            "required": [
+              "amcInstanceId",
+              "workflowExecutionId"
+            ]
+          },
+          "body": {
+            "type": "object",
+            "properties": {
+              "accessRequestedAccount": {
+                "properties": {
+                  "amcAccountId": {
+                    "type": "string",
+                    "description": "The AMC Account ID. Example value: ENTITYABC123XYZ789."
+                  },
+                  "marketplaceId": {
+                    "type": "string",
+                    "description": "The Marketplace ID"
+                  }
+                },
+                "required": [
+                  "amcAccountId",
+                  "marketplaceId"
+                ]
+              }
+            },
+            "required": [
+              "accessRequestedAccount"
+            ]
+          }
+        },
+        "required": [
+          "pathParameters",
+          "body"
+        ]
+      },
+      "execute_queryInputSchema": {
+        "type": "object",
+        "properties": {
+          "skill": {
+            "type": "object",
+            "description": "Do not auto-generate or infer values for this object. Only populate it when a skill definition explicitly provides the skillName and version to pass. If no skill definition is involved, omit this field entirely.",
+            "properties": {
+              "skillName": {
+                "type": "string"
+              },
+              "version": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "skillName",
+              "version"
+            ]
+          },
+          "pathParameters": {
+            "type": "object",
+            "properties": {
+              "amcInstanceId": {
+                "type": "string",
+                "description": "The AMC instance ID"
+              }
+            },
+            "required": [
+              "amcInstanceId"
+            ]
+          },
+          "body": {
+            "type": "object",
+            "properties": {
+              "accessRequestedAccount": {
+                "type": "object",
+                "properties": {
+                  "amcAccountId": {
+                    "type": "string",
+                    "description": "The AMC Account ID. Example value: ENTITYABC123XYZ789."
+                  },
+                  "marketplaceId": {
+                    "type": "string",
+                    "description": "The Marketplace ID"
+                  }
+                },
+                "required": [
+                  "amcAccountId",
+                  "marketplaceId"
+                ]
+              },
+              "timeWindowEnd": {
+                "type": "string",
+                "description": "Only used with a timeWindowType of EXPLICIT. The end of the time window for input data for the execution. This is a nominal time window and not a guarantee that timestamps on any rows will be inside this window. If provided, must also provide a `timeWindowStart`. Required format is yyyy-MM-dd'T'HH:mm:ss."
+              },
+              "timeWindowStart": {
+                "type": "string",
+                "description": "Only used with a timeWindowType of `EXPLICIT`. The start of the time window for input data for the execution. This is a nominal time window and not a guarantee that timestamps on any rows will be inside this window. If provided, must also provide a `timeWindowEnd`. Required format is yyyy-MM-dd'T'HH:mm:ss."
+              },
+              "timeWindowTimeZone": {
+                "type": "string",
+                "description": "The time zone of the specified time window. This applies to both time window start and end if specified for time window type `EXPLICIT` and to the determination of day and month boundaries for other time window types. If not specified, the UTC time zone will be used."
+              },
+              "timeWindowType": {
+                "type": "string",
+                "description": "The type of time window to use for specifying input data for the execution. If not provided, the time window type of `MOST_RECENT_DAY` will be used.",
+                "enum": [
+                  "EXPLICIT",
+                  "MOST_RECENT_DAY",
+                  "MOST_RECENT_WEEK",
+                  "CURRENT_MONTH",
+                  "PREVIOUS_MONTH",
+                  "ALL"
+                ]
+              },
+              "workflow": {
+                "type": "object",
+                "description": "Inline workflow definition containing the SQL query to execute.",
+                "properties": {
+                  "sqlQuery": {
+                    "type": "string",
+                    "description": "The SQL query to execute against AMC. Used for ad-hoc query execution without a pre-existing workflow."
+                  }
+                },
+                "required": [
+                  "sqlQuery"
+                ]
+              },
+              "parameterValues": {
+                "type": "object",
+                "additionalProperties": {
+                  "type": "string"
+                },
+                "description": "Values to use for the parameters specified in the SQL query."
+              }
+            },
+            "required": [
+              "accessRequestedAccount",
+              "workflow"
+            ]
+          }
+        },
+        "required": [
+          "pathParameters",
+          "body"
+        ]
+      },
+      "execute_workflowInputSchema": {
+        "type": "object",
+        "properties": {
+          "skill": {
+            "type": "object",
+            "description": "Do not auto-generate or infer values for this object. Only populate it when a skill definition explicitly provides the skillName and version to pass. If no skill definition is involved, omit this field entirely.",
+            "properties": {
+              "skillName": {
+                "type": "string"
+              },
+              "version": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "skillName",
+              "version"
+            ]
+          },
+          "pathParameters": {
+            "type": "object",
+            "properties": {
+              "amcInstanceId": {
+                "type": "string",
+                "description": "The AMC instance ID"
+              }
+            },
+            "required": [
+              "amcInstanceId"
+            ]
+          },
+          "body": {
+            "type": "object",
+            "properties": {
+              "accessRequestedAccount": {
+                "properties": {
+                  "amcAccountId": {
+                    "type": "string",
+                    "description": "The AMC Account ID. Example value: ENTITYABC123XYZ789."
+                  },
+                  "marketplaceId": {
+                    "type": "string",
+                    "description": "The Marketplace ID"
+                  }
+                },
+                "required": [
+                  "amcAccountId",
+                  "marketplaceId"
+                ]
+              },
+              "timeWindowEnd": {
+                "type": "string",
+                "description": "Only used with a timeWindowType of EXPLICIT. The end of the time window for input data for the workflow execution. This is a nominal time window and not a guarantee that timestamps on any rows will be inside this window. If provided, must also provide a `timeWindowStart`. Required format is yyyy-MM-dd'T'HH:mm:ss."
+              },
+              "timeWindowStart": {
+                "type": "string",
+                "description": "Only used with a timeWindowType of `EXPLICIT`. The start of the time window for input data for the workflow execution. This is a nominal time window and not a guarantee that timestamps on any rows will be inside this window. If provided, must also provide a `timeWindowEnd`. Required format is yyyy-MM-dd'T'HH:mm:ss."
+              },
+              "timeWindowTimeZone": {
+                "type": "string",
+                "description": "The time zone of the specified time window. This applies to both time window start and end if specified for time window type `EXPLICIT` and to the determination of day and month boundaries for other time window types. If not specified, the UTC time zone will be used."
+              },
+              "timeWindowType": {
+                "type": "string",
+                "description": "The type of time window to use to for specifying input data for the workflow execution. If not provided, the time window type of `MOST_RECENT_DAY` will be used.",
+                "enum": [
+                  "EXPLICIT",
+                  "MOST_RECENT_DAY",
+                  "MOST_RECENT_WEEK",
+                  "CURRENT_MONTH",
+                  "PREVIOUS_MONTH",
+                  "ALL"
+                ]
+              },
+              "workflowId": {
+                "type": "string",
+                "description": "The ID of the workflow to execute."
+              },
+              "parameterValues": {
+                "type": "object",
+                "additionalProperties": {
+                  "type": "string"
+                },
+                "description": "Values to use for the parameters specified in the workflow."
+              }
+            },
+            "required": [
+              "accessRequestedAccount",
+              "workflowId"
+            ]
+          }
+        },
+        "required": [
+          "pathParameters",
+          "body"
+        ]
+      },
+      "get_workflow_execution_statusInputSchema": {
+        "type": "object",
+        "properties": {
+          "skill": {
+            "type": "object",
+            "description": "Do not auto-generate or infer values for this object. Only populate it when a skill definition explicitly provides the skillName and version to pass. If no skill definition is involved, omit this field entirely.",
+            "properties": {
+              "skillName": {
+                "type": "string"
+              },
+              "version": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "skillName",
+              "version"
+            ]
+          },
+          "pathParameters": {
+            "type": "object",
+            "properties": {
+              "amcInstanceId": {
+                "type": "string",
+                "description": "The AMC instance ID"
+              },
+              "workflowExecutionId": {
+                "type": "string",
+                "description": "The workflow execution ID"
+              }
+            },
+            "required": [
+              "amcInstanceId",
+              "workflowExecutionId"
+            ]
+          },
+          "body": {
+            "type": "object",
+            "properties": {
+              "accessRequestedAccount": {
+                "properties": {
+                  "amcAccountId": {
+                    "type": "string",
+                    "description": "The AMC Account ID. Example value: ENTITYABC123XYZ789."
+                  },
+                  "marketplaceId": {
+                    "type": "string",
+                    "description": "The Marketplace ID"
+                  }
+                },
+                "required": [
+                  "amcAccountId",
+                  "marketplaceId"
+                ]
+              }
+            },
+            "required": [
+              "accessRequestedAccount"
+            ]
+          }
+        },
+        "required": [
+          "pathParameters",
+          "body"
+        ]
+      }
+    }
+  }
+}

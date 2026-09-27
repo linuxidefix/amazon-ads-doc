@@ -1,0 +1,243 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "user_invitations",
+    "description": "MCP tools related to user_invitations",
+    "version": "v1"
+  },
+  "paths": {
+    "/mcp/create": {
+      "post": {
+        "operationId": "create",
+        "description": "Create user invitations for an advertising account. Pass accessRequestedAccount in the body to specify the account. Each invitation needs a user (emailAddress + userName), permissionSet (type: ROLE or CUSTOM_PERMISSION_SET), and optionally countries. Max 50 per request. Invitations expire after 2 weeks.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/createInputSchema"
+              }
+            }
+          }
+        },
+        "tags": [
+          "user_invitations"
+        ]
+      }
+    },
+    "/mcp/update": {
+      "post": {
+        "operationId": "update",
+        "description": "Update user invitations — revoke or resend. Pass accessRequestedAccount in the body to specify the account. Each update needs invitationId (from user_invitations-list) and state (REVOKED or RESENT). Max 50 per request.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/updateInputSchema"
+              }
+            }
+          }
+        },
+        "tags": [
+          "user_invitations"
+        ]
+      }
+    },
+    "/mcp/list": {
+      "post": {
+        "operationId": "list",
+        "description": "List all user invitations for an advertising account. Pass accessRequestedAccount in the body to specify the account.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/listInputSchema"
+              }
+            }
+          }
+        },
+        "tags": [
+          "user_invitations"
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "createInputSchema": {
+        "type": "object",
+        "properties": {
+          "body": {
+            "type": "object",
+            "properties": {
+              "accessRequestedAccount": {
+                "type": "object",
+                "description": "The advertiser account to perform the operation on.",
+                "properties": {
+                  "advertiserAccountId": {
+                    "type": "string",
+                    "description": "The identifier of an Amazon Ads Advertiser Account."
+                  }
+                }
+              },
+              "notifyInvitedUsers": {
+                "type": "boolean",
+                "description": "Indicates if an invitation email will be sent to the invited user. Default: false"
+              },
+              "userInvitationRequests": {
+                "type": "array",
+                "description": "List of invitations to be sent to users.",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "user": {
+                      "type": "object",
+                      "properties": {
+                        "emailAddress": {
+                          "type": "string",
+                          "description": "Email address of the user to be invited"
+                        },
+                        "userName": {
+                          "type": "string",
+                          "description": "Name of the user to be invited"
+                        }
+                      },
+                      "required": [
+                        "emailAddress",
+                        "userName"
+                      ]
+                    },
+                    "countries": {
+                      "type": "array",
+                      "description": "List of two-letter ISO 3166 country codes for the invitation.",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "countryCode": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    },
+                    "permissionSet": {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "description": "Type of permission set: ROLE or CUSTOM_PERMISSION_SET"
+                        },
+                        "role": {
+                          "type": "object",
+                          "properties": {
+                            "name": {
+                              "type": "string"
+                            }
+                          }
+                        },
+                        "customPermissionSet": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "name": {
+                                "type": "string"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "minItems": 1,
+                "maxItems": 50
+              }
+            },
+            "required": [
+              "userInvitationRequests"
+            ]
+          }
+        }
+      },
+      "updateInputSchema": {
+        "type": "object",
+        "properties": {
+          "body": {
+            "type": "object",
+            "properties": {
+              "accessRequestedAccount": {
+                "type": "object",
+                "description": "The advertiser account to perform the operation on.",
+                "properties": {
+                  "advertiserAccountId": {
+                    "type": "string",
+                    "description": "The identifier of an Amazon Ads Advertiser Account."
+                  }
+                }
+              },
+              "notifyInvitedUsers": {
+                "type": "boolean",
+                "description": "Indicates if an invitation email will be sent. Default: false"
+              },
+              "updates": {
+                "type": "array",
+                "description": "List of updates to perform for invitations.",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "invitationId": {
+                      "type": "string",
+                      "description": "Identifier of the invitation to update"
+                    },
+                    "state": {
+                      "type": "string",
+                      "description": "State to change invitation to: REVOKED or RESENT"
+                    }
+                  },
+                  "required": [
+                    "invitationId",
+                    "state"
+                  ]
+                },
+                "minItems": 1,
+                "maxItems": 50
+              }
+            },
+            "required": [
+              "updates"
+            ]
+          }
+        }
+      },
+      "listInputSchema": {
+        "type": "object",
+        "properties": {
+          "body": {
+            "type": "object",
+            "properties": {
+              "accessRequestedAccount": {
+                "type": "object",
+                "description": "The advertiser account to perform the operation on.",
+                "properties": {
+                  "advertiserAccountId": {
+                    "type": "string",
+                    "description": "The identifier of an Amazon Ads Advertiser Account."
+                  }
+                }
+              },
+              "maxResults": {
+                "type": "number",
+                "description": "Max results per page (1-50)",
+                "minimum": 1,
+                "maximum": 50
+              },
+              "nextToken": {
+                "type": "string",
+                "description": "Pagination token for next page"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

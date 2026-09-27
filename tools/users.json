@@ -1,0 +1,70 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "users",
+    "description": "MCP tools related to users",
+    "version": "v1"
+  },
+  "paths": {
+    "/mcp/list_users": {
+      "post": {
+        "operationId": "list_users",
+        "description": "List users with access to an advertising account. Pass accessRequestedAccount in the body to specify the account. Returns userId and masked email for each user. Include maxResults/nextToken in body for pagination.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/list_usersInputSchema"
+              }
+            }
+          }
+        },
+        "tags": [
+          "users"
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "list_usersInputSchema": {
+        "type": "object",
+        "properties": {
+          "body": {
+            "type": "object",
+            "properties": {
+              "accessRequestedAccount": {
+                "type": "object",
+                "description": "The advertiser account to perform the operation on.",
+                "properties": {
+                  "advertiserAccountId": {
+                    "type": "string",
+                    "description": "The identifier of an Amazon Ads Advertiser Account."
+                  }
+                }
+              },
+              "maxResults": {
+                "type": "number",
+                "description": "Max results for pagination (1-100).",
+                "minimum": 1,
+                "maximum": 100
+              },
+              "nextToken": {
+                "type": "string",
+                "description": "Pagination token for next page."
+              },
+              "accessScopeFilter": {
+                "type": "object",
+                "description": "Filter by access scope."
+              },
+              "countryCodesFilter": {
+                "type": "object",
+                "description": "Filter by country codes."
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

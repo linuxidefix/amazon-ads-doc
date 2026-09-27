@@ -1,0 +1,1101 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "account_management",
+    "description": "MCP tools related to account_management",
+    "version": "v1"
+  },
+  "paths": {
+    "/mcp/update_account_currency": {
+      "post": {
+        "operationId": "update_account_currency",
+        "description": "Update the currency code of an advertiser account.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/update_account_currencyInputSchema"
+              }
+            }
+          }
+        },
+        "tags": [
+          "account_management"
+        ]
+      }
+    },
+    "/mcp/update_account_timezone": {
+      "post": {
+        "operationId": "update_account_timezone",
+        "description": "Update the timezone of an advertiser account.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/update_account_timezoneInputSchema"
+              }
+            }
+          }
+        },
+        "tags": [
+          "account_management"
+        ]
+      }
+    },
+    "/mcp/update_account_name": {
+      "post": {
+        "operationId": "update_account_name",
+        "description": "Update the display name of an advertiser account.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/update_account_nameInputSchema"
+              }
+            }
+          }
+        },
+        "tags": [
+          "account_management"
+        ]
+      }
+    },
+    "/mcp/query_advertiser_account": {
+      "post": {
+        "operationId": "query_advertiser_account",
+        "description": "List or query advertiser accounts the user has access to. Without filters, returns global accounts. Use `isGlobalAccountFilter: { include: [true] }` for global or `{ include: [false] }` for non-global accounts. Use `advertiserAccountIdFilter` to query specific global accounts by ID (e.g. `amzn1.ads-account.g.XXXXX`). Returns `alternateIds` containing DSP advertiser IDs (`dspAdvertiserId`), Sponsored Ads profile IDs (`profileId`), entity IDs (`entityId`), and marketplace country codes (`countryCode`). Preferred tool for \"which accounts do I have access to?\" questions.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/query_advertiser_accountInputSchema"
+              }
+            }
+          }
+        },
+        "tags": [
+          "account_management"
+        ]
+      }
+    },
+    "/mcp/query_account_link": {
+      "post": {
+        "operationId": "query_account_link",
+        "description": "Query account links. Manager Account users can retrieve details about all accounts linked to their Manager Accounts. Additionally, advertiser account users can find all Manager Accounts linked to their advertising account.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/query_account_linkInputSchema"
+              }
+            }
+          }
+        },
+        "tags": [
+          "account_management"
+        ]
+      }
+    },
+    "/mcp/create_advertiser_account": {
+      "post": {
+        "operationId": "create_advertiser_account",
+        "description": "Create a new advertiser account (Global Account). Returns an advertiserAccountId in the format amzn1.ads-account.g.*. The account starts in REGISTRATION_IN_PROGRESS status. Requires businessDetails with a valid address.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/create_advertiser_accountInputSchema"
+              }
+            }
+          }
+        },
+        "tags": [
+          "account_management"
+        ]
+      }
+    },
+    "/mcp/update_advertiser_account": {
+      "post": {
+        "operationId": "update_advertiser_account",
+        "description": "Update an advertiser account.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/update_advertiser_accountInputSchema"
+              }
+            }
+          }
+        },
+        "tags": [
+          "account_management"
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "update_account_currencyInputSchema": {
+        "type": "object",
+        "properties": {
+          "skill": {
+            "type": "object",
+            "description": "Do not auto-generate or infer values for this object. Only populate it when a skill definition explicitly provides the skillName and version to pass. If no skill definition is involved, omit this field entirely.",
+            "properties": {
+              "skillName": {
+                "type": "string"
+              },
+              "version": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "skillName",
+              "version"
+            ]
+          },
+          "body": {
+            "type": "object",
+            "properties": {
+              "advertiserAccounts": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "advertiserAccountId": {
+                      "type": "string",
+                      "description": "The unique identifier for the advertiser account."
+                    },
+                    "currencyCode": {
+                      "type": "string",
+                      "enum": [
+                        "AED",
+                        "AUD",
+                        "BRL",
+                        "CAD",
+                        "CHF",
+                        "CNY",
+                        "DKK",
+                        "EGP",
+                        "EUR",
+                        "GBP",
+                        "INR",
+                        "JPY",
+                        "MXN",
+                        "MXP",
+                        "NGN",
+                        "NOK",
+                        "NZD",
+                        "PLN",
+                        "SAR",
+                        "SEK",
+                        "SGD",
+                        "TRY",
+                        "USD",
+                        "ZAR"
+                      ],
+                      "description": "Currency code for the advertiser account."
+                    }
+                  },
+                  "required": [
+                    "advertiserAccountId",
+                    "currencyCode"
+                  ]
+                },
+                "minItems": 1,
+                "maxItems": 100
+              }
+            },
+            "required": [
+              "advertiserAccounts"
+            ]
+          }
+        },
+        "required": [
+          "body"
+        ]
+      },
+      "update_account_timezoneInputSchema": {
+        "type": "object",
+        "properties": {
+          "skill": {
+            "type": "object",
+            "description": "Do not auto-generate or infer values for this object. Only populate it when a skill definition explicitly provides the skillName and version to pass. If no skill definition is involved, omit this field entirely.",
+            "properties": {
+              "skillName": {
+                "type": "string"
+              },
+              "version": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "skillName",
+              "version"
+            ]
+          },
+          "body": {
+            "type": "object",
+            "properties": {
+              "advertiserAccounts": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "advertiserAccountId": {
+                      "type": "string",
+                      "description": "The unique identifier for the advertiser account."
+                    },
+                    "timeZone": {
+                      "type": "string",
+                      "enum": [
+                        "AMERICA_ANCHORAGE",
+                        "AMERICA_CARACAS",
+                        "AMERICA_CHICAGO",
+                        "AMERICA_DENVER",
+                        "AMERICA_HALIFAX",
+                        "AMERICA_LOS_ANGELES",
+                        "AMERICA_MEXICO_CITY",
+                        "AMERICA_NEW_YORK",
+                        "AMERICA_SAO_PAULO",
+                        "AMERICA_ST_JOHNS",
+                        "ASIA_ALMATY",
+                        "ASIA_BAGHDAD",
+                        "ASIA_BANGKOK",
+                        "ASIA_DUBAI",
+                        "ASIA_HONG_KONG",
+                        "ASIA_KABUL",
+                        "ASIA_KATHMANDU",
+                        "ASIA_KOLKATA",
+                        "ASIA_MAGADAN",
+                        "ASIA_RIYADH",
+                        "ASIA_SHANGHAI",
+                        "ASIA_SINGAPORE",
+                        "ASIA_TEHRAN",
+                        "ASIA_TOKYO",
+                        "ASIA_YEKATERINBURG",
+                        "ASIA_YEREVAN",
+                        "ATLANTIC_AZORES",
+                        "ATLANTIC_SOUTH_GEORGIA",
+                        "AUSTRALIA_BRISBANE",
+                        "AUSTRALIA_DARWIN",
+                        "AUSTRALIA_SYDNEY",
+                        "EET",
+                        "EUROPE_AMSTERDAM",
+                        "EUROPE_ISTANBUL",
+                        "EUROPE_LONDON",
+                        "EUROPE_PARIS",
+                        "EUROPE_STOCKHOLM",
+                        "INDIAN_COCOS",
+                        "PACIFIC_AUCKLAND",
+                        "PACIFIC_FIJI",
+                        "PACIFIC_HONOLULU",
+                        "PACIFIC_KWAJALEIN",
+                        "PACIFIC_MIDWAY"
+                      ],
+                      "description": "Timezone for the advertiser account."
+                    }
+                  },
+                  "required": [
+                    "advertiserAccountId",
+                    "timeZone"
+                  ]
+                },
+                "minItems": 1,
+                "maxItems": 100
+              }
+            },
+            "required": [
+              "advertiserAccounts"
+            ]
+          }
+        },
+        "required": [
+          "body"
+        ]
+      },
+      "update_account_nameInputSchema": {
+        "type": "object",
+        "properties": {
+          "skill": {
+            "type": "object",
+            "description": "Do not auto-generate or infer values for this object. Only populate it when a skill definition explicitly provides the skillName and version to pass. If no skill definition is involved, omit this field entirely.",
+            "properties": {
+              "skillName": {
+                "type": "string"
+              },
+              "version": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "skillName",
+              "version"
+            ]
+          },
+          "body": {
+            "type": "object",
+            "properties": {
+              "advertiserAccounts": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "advertiserAccountId": {
+                      "type": "string",
+                      "description": "The unique identifier for the advertiser account."
+                    },
+                    "displayName": {
+                      "type": "string",
+                      "description": "Display name for the advertiser account."
+                    }
+                  },
+                  "required": [
+                    "advertiserAccountId",
+                    "displayName"
+                  ]
+                },
+                "minItems": 1,
+                "maxItems": 100
+              }
+            },
+            "required": [
+              "advertiserAccounts"
+            ]
+          }
+        },
+        "required": [
+          "body"
+        ]
+      },
+      "query_advertiser_accountInputSchema": {
+        "type": "object",
+        "properties": {
+          "skill": {
+            "type": "object",
+            "description": "Do not auto-generate or infer values for this object. Only populate it when a skill definition explicitly provides the skillName and version to pass. If no skill definition is involved, omit this field entirely.",
+            "properties": {
+              "skillName": {
+                "type": "string"
+              },
+              "version": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "skillName",
+              "version"
+            ]
+          },
+          "body": {
+            "type": "object",
+            "properties": {
+              "advertiserAccountIdFilter": {
+                "type": "object",
+                "properties": {
+                  "include": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "required": [
+                  "include"
+                ]
+              },
+              "isGlobalAccountFilter": {
+                "type": "object",
+                "properties": {
+                  "include": {
+                    "type": "array",
+                    "items": {
+                      "type": "boolean"
+                    }
+                  }
+                },
+                "required": [
+                  "include"
+                ]
+              },
+              "maxResults": {
+                "type": "integer"
+              },
+              "nextToken": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      },
+      "query_account_linkInputSchema": {
+        "type": "object",
+        "properties": {
+          "skill": {
+            "type": "object",
+            "description": "Do not auto-generate or infer values for this object. Only populate it when a skill definition explicitly provides the skillName and version to pass. If no skill definition is involved, omit this field entirely.",
+            "properties": {
+              "skillName": {
+                "type": "string"
+              },
+              "version": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "skillName",
+              "version"
+            ]
+          },
+          "body": {
+            "type": "object",
+            "properties": {
+              "accessRequestedAccount": {
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "advertiserAccountId": {
+                        "type": "string",
+                        "description": "The identifier of an Amazon Ads Advertiser Account."
+                      }
+                    },
+                    "required": [
+                      "advertiserAccountId"
+                    ]
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "managerAccountId": {
+                        "type": "string",
+                        "description": "The identifier of an Amazon Ads Manager Account."
+                      }
+                    },
+                    "required": [
+                      "managerAccountId"
+                    ]
+                  }
+                ]
+              },
+              "relationshipTypeFilter": {
+                "type": "object",
+                "properties": {
+                  "include": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "enum": [
+                        "PARENT",
+                        "CHILD"
+                      ]
+                    },
+                    "maxItems": 1,
+                    "minItems": 1,
+                    "description": "PARENT: Parent Accounts linked to an Advertiser/Manager Account, CHILD: Child Accounts linked to a Manager Account"
+                  }
+                },
+                "required": [
+                  "include"
+                ]
+              },
+              "nextToken": {
+                "type": "string"
+              },
+              "maxResults": {
+                "type": "integer",
+                "default": 100,
+                "maximum": 100,
+                "minimum": 10
+              }
+            },
+            "required": [
+              "accessRequestedAccount",
+              "relationshipTypeFilter"
+            ]
+          }
+        },
+        "required": [
+          "body"
+        ]
+      },
+      "create_advertiser_accountInputSchema": {
+        "type": "object",
+        "properties": {
+          "skill": {
+            "type": "object",
+            "description": "Do not auto-generate or infer values for this object. Only populate it when a skill definition explicitly provides the skillName and version to pass. If no skill definition is involved, omit this field entirely.",
+            "properties": {
+              "skillName": {
+                "type": "string"
+              },
+              "version": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "skillName",
+              "version"
+            ]
+          },
+          "body": {
+            "type": "object",
+            "properties": {
+              "advertiserAccounts": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "businessDetails": {
+                      "type": "array",
+                      "description": "The business details for an advertising account, containing either an address token for sellingAccount, or an address object if the sellingAccount lacks a valid address.",
+                      "items": {
+                        "type": "object",
+                        "description": "The business details of advertising account.",
+                        "properties": {
+                          "address": {
+                            "type": "object",
+                            "description": "The business address of advertising account.",
+                            "properties": {
+                              "addressLine1": {
+                                "type": "string",
+                                "description": "Primary street address of the business."
+                              },
+                              "addressLine2": {
+                                "type": "string",
+                                "description": "Secondary address line (suite, unit, etc.)."
+                              },
+                              "businessName": {
+                                "type": "string",
+                                "description": "The name of business."
+                              },
+                              "city": {
+                                "type": "string",
+                                "description": "The city where business is located."
+                              },
+                              "countryCode": {
+                                "type": "string",
+                                "description": "ISO 3166-1 alpha-2 country code (e.g. \"US\", \"GB\", \"DE\")."
+                              },
+                              "phoneNumber": {
+                                "type": "string",
+                                "description": "Business phone number."
+                              },
+                              "state": {
+                                "type": "string",
+                                "description": "The state or subdivision where the business is located. Validated against CLDR subdivision names for the given countryCode."
+                              },
+                              "zipCode": {
+                                "type": "string",
+                                "description": "The zipCode where business is located."
+                              }
+                            },
+                            "required": [
+                              "addressLine1",
+                              "businessName",
+                              "city",
+                              "countryCode",
+                              "phoneNumber"
+                            ]
+                          },
+                          "addressToken": {
+                            "type": "string",
+                            "description": "The token of the business address being linked."
+                          },
+                          "businessRegistrationNumber": {
+                            "type": "string",
+                            "description": "The business registration number of the business."
+                          },
+                          "website": {
+                            "type": "string",
+                            "description": "Business website URL."
+                          }
+                        }
+                      }
+                    },
+                    "currencyCode": {
+                      "type": "string",
+                      "enum": [
+                        "AED",
+                        "AUD",
+                        "BRL",
+                        "CAD",
+                        "CHF",
+                        "CNY",
+                        "DKK",
+                        "EGP",
+                        "EUR",
+                        "GBP",
+                        "INR",
+                        "JPY",
+                        "MXN",
+                        "MXP",
+                        "NGN",
+                        "NOK",
+                        "NZD",
+                        "PLN",
+                        "SAR",
+                        "SEK",
+                        "SGD",
+                        "TRY",
+                        "USD",
+                        "ZAR"
+                      ]
+                    },
+                    "displayName": {
+                      "type": "string",
+                      "description": "Display name for the advertiser account."
+                    },
+                    "industry": {
+                      "type": "string",
+                      "enum": [
+                        "AMS_KEYWORD",
+                        "AMS_SELF_SERVICE",
+                        "AUTOMOTIVE",
+                        "CONSUMER_GOODS",
+                        "ECOMMERCE",
+                        "ENTERTAINMENT",
+                        "FINANCIAL_SERVICES",
+                        "HARDWARE_AND_ELECTRONICS",
+                        "HEALTH",
+                        "HOUSE_ADS",
+                        "PUBLIC_SERVICES",
+                        "REMNANT_NETWORKS",
+                        "RETAIL_GOODS_AND_SERVICES",
+                        "SOFTWARE",
+                        "TELECOMMUNICATIONS",
+                        "TRAVEL",
+                        "TWITCH",
+                        "TWITCH_TV",
+                        "WEB_MEDIA"
+                      ]
+                    },
+                    "isGlobalAccount": {
+                      "type": "boolean",
+                      "description": "Indicates whether the advertising account is global or not."
+                    },
+                    "isTestAccount": {
+                      "type": "boolean",
+                      "description": "Indicates whether the advertising account is a test account or not."
+                    },
+                    "managerAccountId": {
+                      "type": "string",
+                      "description": "Optional. The ID of the manager (parent) account to link the new advertiser account to."
+                    },
+                    "sellingAccountLinkRequests": {
+                      "type": "array",
+                      "description": "The selling account link requests for an advertiser account, containing details for linking.",
+                      "items": {
+                        "oneOf": [
+                          {
+                            "type": "object",
+                            "properties": {
+                              "emailForApprovalDetails": {
+                                "type": "object",
+                                "properties": {
+                                  "emailForApproval": {
+                                    "type": "string",
+                                    "description": "The email address associated with the account you want to link to."
+                                  },
+                                  "sellingProgram": {
+                                    "type": "string",
+                                    "enum": [
+                                      "AMAZON_AUTHOR",
+                                      "AMAZON_SELLER",
+                                      "AMAZON_VENDOR"
+                                    ]
+                                  }
+                                },
+                                "required": [
+                                  "emailForApproval",
+                                  "sellingProgram"
+                                ]
+                              }
+                            },
+                            "required": [
+                              "emailForApprovalDetails"
+                            ]
+                          },
+                          {
+                            "type": "object",
+                            "properties": {
+                              "sellingAccountLinkDetails": {
+                                "type": "object",
+                                "properties": {
+                                  "sellingAccountLinkToken": {
+                                    "type": "string",
+                                    "description": "The token to locate a selling account to be linked."
+                                  },
+                                  "sellingProgram": {
+                                    "type": "string",
+                                    "enum": [
+                                      "AMAZON_AUTHOR",
+                                      "AMAZON_SELLER",
+                                      "AMAZON_VENDOR"
+                                    ]
+                                  }
+                                },
+                                "required": [
+                                  "sellingAccountLinkToken"
+                                ]
+                              }
+                            },
+                            "required": [
+                              "sellingAccountLinkDetails"
+                            ]
+                          }
+                        ]
+                      }
+                    },
+                    "timeZone": {
+                      "type": "string",
+                      "description": "Each complies with the ISO 8601 TZ identifier standard",
+                      "enum": [
+                        "AMERICA_ANCHORAGE",
+                        "AMERICA_CARACAS",
+                        "AMERICA_CHICAGO",
+                        "AMERICA_DENVER",
+                        "AMERICA_HALIFAX",
+                        "AMERICA_LOS_ANGELES",
+                        "AMERICA_MEXICO_CITY",
+                        "AMERICA_NEW_YORK",
+                        "AMERICA_SAO_PAULO",
+                        "AMERICA_ST_JOHNS",
+                        "ASIA_ALMATY",
+                        "ASIA_BAGHDAD",
+                        "ASIA_BANGKOK",
+                        "ASIA_DUBAI",
+                        "ASIA_HONG_KONG",
+                        "ASIA_KABUL",
+                        "ASIA_KATHMANDU",
+                        "ASIA_KOLKATA",
+                        "ASIA_MAGADAN",
+                        "ASIA_RIYADH",
+                        "ASIA_SHANGHAI",
+                        "ASIA_SINGAPORE",
+                        "ASIA_TEHRAN",
+                        "ASIA_TOKYO",
+                        "ASIA_YEKATERINBURG",
+                        "ASIA_YEREVAN",
+                        "ATLANTIC_AZORES",
+                        "ATLANTIC_SOUTH_GEORGIA",
+                        "AUSTRALIA_BRISBANE",
+                        "AUSTRALIA_DARWIN",
+                        "AUSTRALIA_SYDNEY",
+                        "EET",
+                        "EUROPE_AMSTERDAM",
+                        "EUROPE_ISTANBUL",
+                        "EUROPE_LONDON",
+                        "EUROPE_PARIS",
+                        "EUROPE_STOCKHOLM",
+                        "INDIAN_COCOS",
+                        "PACIFIC_AUCKLAND",
+                        "PACIFIC_FIJI",
+                        "PACIFIC_HONOLULU",
+                        "PACIFIC_KWAJALEIN",
+                        "PACIFIC_MIDWAY"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "businessDetails"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "update_advertiser_accountInputSchema": {
+        "type": "object",
+        "properties": {
+          "skill": {
+            "type": "object",
+            "description": "Do not auto-generate or infer values for this object. Only populate it when a skill definition explicitly provides the skillName and version to pass. If no skill definition is involved, omit this field entirely.",
+            "properties": {
+              "skillName": {
+                "type": "string"
+              },
+              "version": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "skillName",
+              "version"
+            ]
+          },
+          "body": {
+            "type": "object",
+            "properties": {
+              "advertiserAccounts": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "advertiserAccountId": {
+                      "type": "string",
+                      "description": "The unique identifier for the advertiser account."
+                    },
+                    "businessDetails": {
+                      "type": "array",
+                      "description": "The business details for an advertising account, containing either an address token for sellingAccount, or an address object if the sellingAccount lacks a valid address.",
+                      "items": {
+                        "type": "object",
+                        "description": "The business details of advertising account.",
+                        "properties": {
+                          "address": {
+                            "type": "object",
+                            "description": "The business address of advertising account.",
+                            "properties": {
+                              "addressLine1": {
+                                "type": "string",
+                                "description": "The address details - 1 of business."
+                              },
+                              "addressLine2": {
+                                "type": "string",
+                                "description": "The address details - 2 of business."
+                              },
+                              "businessName": {
+                                "type": "string",
+                                "description": "The name of business."
+                              },
+                              "city": {
+                                "type": "string",
+                                "description": "The city where business is located."
+                              },
+                              "countryCode": {
+                                "type": "string",
+                                "description": "The country where business is located."
+                              },
+                              "phoneNumber": {
+                                "type": "string",
+                                "description": "The phone number of business."
+                              },
+                              "state": {
+                                "type": "string",
+                                "description": "The city where business is located."
+                              },
+                              "zipCode": {
+                                "type": "string",
+                                "description": "The zipCode where business is located."
+                              }
+                            },
+                            "required": [
+                              "addressLine1",
+                              "businessName",
+                              "city",
+                              "countryCode"
+                            ]
+                          },
+                          "addressToken": {
+                            "type": "string",
+                            "description": "The token of the business address being linked."
+                          },
+                          "businessRegistrationNumber": {
+                            "type": "string",
+                            "description": "The business registration number of the business."
+                          },
+                          "website": {
+                            "type": "string",
+                            "description": "The website of the business."
+                          }
+                        }
+                      }
+                    },
+                    "currencyCode": {
+                      "type": "string",
+                      "enum": [
+                        "AED",
+                        "AUD",
+                        "BRL",
+                        "CAD",
+                        "CHF",
+                        "CNY",
+                        "DKK",
+                        "EGP",
+                        "EUR",
+                        "GBP",
+                        "INR",
+                        "JPY",
+                        "MXN",
+                        "MXP",
+                        "NGN",
+                        "NOK",
+                        "NZD",
+                        "PLN",
+                        "SAR",
+                        "SEK",
+                        "SGD",
+                        "TRY",
+                        "USD",
+                        "ZAR"
+                      ]
+                    },
+                    "displayName": {
+                      "type": "string",
+                      "description": "Display name for the advertiser account."
+                    },
+                    "industry": {
+                      "type": "string",
+                      "enum": [
+                        "AMS_KEYWORD",
+                        "AMS_SELF_SERVICE",
+                        "AUTOMOTIVE",
+                        "CONSUMER_GOODS",
+                        "ECOMMERCE",
+                        "ENTERTAINMENT",
+                        "FINANCIAL_SERVICES",
+                        "HARDWARE_AND_ELECTRONICS",
+                        "HEALTH",
+                        "HOUSE_ADS",
+                        "PUBLIC_SERVICES",
+                        "REMNANT_NETWORKS",
+                        "RETAIL_GOODS_AND_SERVICES",
+                        "SOFTWARE",
+                        "TELECOMMUNICATIONS",
+                        "TRAVEL",
+                        "TWITCH",
+                        "TWITCH_TV",
+                        "WEB_MEDIA"
+                      ]
+                    },
+                    "isGlobalAccount": {
+                      "type": "boolean",
+                      "description": "Indicates whether the advertising account is global or not."
+                    },
+                    "isTestAccount": {
+                      "type": "boolean",
+                      "description": "Indicates whether the advertising account is a test account or not."
+                    },
+                    "managerAccountId": {
+                      "type": "string",
+                      "description": "Optional ManagerAccount to link to the advertiser account."
+                    },
+                    "sellingAccountLinkRequests": {
+                      "type": "array",
+                      "description": "The selling account link requests for an advertiser account, containing details for linking.",
+                      "items": {
+                        "oneOf": [
+                          {
+                            "type": "object",
+                            "properties": {
+                              "emailForApprovalDetails": {
+                                "type": "object",
+                                "properties": {
+                                  "emailForApproval": {
+                                    "type": "string",
+                                    "description": "The email address associated with the account you want to link to."
+                                  },
+                                  "sellingProgram": {
+                                    "type": "string",
+                                    "enum": [
+                                      "AMAZON_AUTHOR",
+                                      "AMAZON_SELLER",
+                                      "AMAZON_VENDOR"
+                                    ]
+                                  }
+                                },
+                                "required": [
+                                  "emailForApproval",
+                                  "sellingProgram"
+                                ]
+                              }
+                            },
+                            "required": [
+                              "emailForApprovalDetails"
+                            ]
+                          },
+                          {
+                            "type": "object",
+                            "properties": {
+                              "sellingAccountLinkDetails": {
+                                "type": "object",
+                                "properties": {
+                                  "sellingAccountLinkToken": {
+                                    "type": "string",
+                                    "description": "The token to locate a selling account to be linked."
+                                  },
+                                  "sellingProgram": {
+                                    "type": "string",
+                                    "enum": [
+                                      "AMAZON_AUTHOR",
+                                      "AMAZON_SELLER",
+                                      "AMAZON_VENDOR"
+                                    ]
+                                  }
+                                },
+                                "required": [
+                                  "sellingAccountLinkToken"
+                                ]
+                              }
+                            },
+                            "required": [
+                              "sellingAccountLinkDetails"
+                            ]
+                          }
+                        ]
+                      }
+                    },
+                    "timeZone": {
+                      "type": "string",
+                      "description": "Each complies with the ISO 8601 TZ identifier standard",
+                      "enum": [
+                        "AMERICA_ANCHORAGE",
+                        "AMERICA_CARACAS",
+                        "AMERICA_CHICAGO",
+                        "AMERICA_DENVER",
+                        "AMERICA_HALIFAX",
+                        "AMERICA_LOS_ANGELES",
+                        "AMERICA_MEXICO_CITY",
+                        "AMERICA_NEW_YORK",
+                        "AMERICA_SAO_PAULO",
+                        "AMERICA_ST_JOHNS",
+                        "ASIA_ALMATY",
+                        "ASIA_BAGHDAD",
+                        "ASIA_BANGKOK",
+                        "ASIA_DUBAI",
+                        "ASIA_HONG_KONG",
+                        "ASIA_KABUL",
+                        "ASIA_KATHMANDU",
+                        "ASIA_KOLKATA",
+                        "ASIA_MAGADAN",
+                        "ASIA_RIYADH",
+                        "ASIA_SHANGHAI",
+                        "ASIA_SINGAPORE",
+                        "ASIA_TEHRAN",
+                        "ASIA_TOKYO",
+                        "ASIA_YEKATERINBURG",
+                        "ASIA_YEREVAN",
+                        "ATLANTIC_AZORES",
+                        "ATLANTIC_SOUTH_GEORGIA",
+                        "AUSTRALIA_BRISBANE",
+                        "AUSTRALIA_DARWIN",
+                        "AUSTRALIA_SYDNEY",
+                        "EET",
+                        "EUROPE_AMSTERDAM",
+                        "EUROPE_ISTANBUL",
+                        "EUROPE_LONDON",
+                        "EUROPE_PARIS",
+                        "EUROPE_STOCKHOLM",
+                        "INDIAN_COCOS",
+                        "PACIFIC_AUCKLAND",
+                        "PACIFIC_FIJI",
+                        "PACIFIC_HONOLULU",
+                        "PACIFIC_KWAJALEIN",
+                        "PACIFIC_MIDWAY"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "advertiserAccountId"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

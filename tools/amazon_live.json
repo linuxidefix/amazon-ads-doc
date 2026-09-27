@@ -1,0 +1,2525 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "amazon_live",
+    "description": "MCP tools related to amazon_live",
+    "version": "v1"
+  },
+  "paths": {
+    "/mcp/list_broadcasts": {
+      "post": {
+        "operationId": "list_broadcasts",
+        "description": "List all Amazon Live broadcasts for a specific channel. Returns paginated broadcast details filtered by channelId. Use this when you know the channel and want all its broadcasts.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/list_broadcastsInputSchema"
+              }
+            }
+          }
+        },
+        "tags": [
+          "amazon_live"
+        ]
+      }
+    },
+    "/mcp/delete_broadcast": {
+      "post": {
+        "operationId": "delete_broadcast",
+        "description": "Delete an Amazon Live broadcast by its broadcastId. This permanently removes the broadcast and cannot be undone. Only broadcasts that are not currently LIVE can be deleted.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/delete_broadcastInputSchema"
+              }
+            }
+          }
+        },
+        "tags": [
+          "amazon_live"
+        ]
+      }
+    },
+    "/mcp/query_promo_code": {
+      "post": {
+        "operationId": "query_promo_code",
+        "description": "Validate promotion codes by querying Amazon's promotions system. Required: broadcastId filter and promoCode filter (up to 10 codes). Returns validated promo code details including discount percentage, validity window, and associated product IDs (ASINs). Use this to check if a promo code exists and is valid before associating it with a broadcast.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/query_promo_codeInputSchema"
+              }
+            }
+          }
+        },
+        "tags": [
+          "amazon_live"
+        ]
+      }
+    },
+    "/mcp/list_carousel_items": {
+      "post": {
+        "operationId": "list_carousel_items",
+        "description": "List carousel items (products or landing pages) shown during an Amazon Live broadcast. Returns display order, activation status, carousel type (PRODUCT or CUSTOM), and metadata such as product ID or landing page details. Use this to see what items are being showcased during a broadcast.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/list_carousel_itemsInputSchema"
+              }
+            }
+          }
+        },
+        "tags": [
+          "amazon_live"
+        ]
+      }
+    },
+    "/mcp/create_broadcast": {
+      "post": {
+        "operationId": "create_broadcast",
+        "description": "Create a new Amazon Live broadcast scheduled on a specific channel. Required: title, channelId. Optional: scheduledStartDateTime, videoSource, streamingOrientation, isPublic, isPractice, includesDeals. Returns the created broadcast with a server-assigned broadcastId and initial broadcastStatus. Practice broadcasts (isPractice=true) are test broadcasts that do not appear to end viewers.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/create_broadcastInputSchema"
+              }
+            }
+          }
+        },
+        "tags": [
+          "amazon_live"
+        ]
+      }
+    },
+    "/mcp/update_carousel_item": {
+      "post": {
+        "operationId": "update_carousel_item",
+        "description": "Update existing carousel items (products or landing pages) in an Amazon Live broadcast. Supports bulk update up to 45 items per call. Required per item: carouselItemId. Only provided fields are modified; others remain unchanged. The type field is immutable after creation. Use isActive=false to hide an item without deleting it.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/update_carousel_itemInputSchema"
+              }
+            }
+          }
+        },
+        "tags": [
+          "amazon_live"
+        ]
+      }
+    },
+    "/mcp/update_broadcast": {
+      "post": {
+        "operationId": "update_broadcast",
+        "description": "Update an existing Amazon Live broadcast. Required: broadcastId. Only provided fields are modified; others remain unchanged. CAUTION: broadcastStatus transitions are significant - moving to LIVE starts the stream, moving to COMPLETED ends it permanently. Prefer the dedicated go-live and end-broadcast workflows over direct status updates when possible.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/update_broadcastInputSchema"
+              }
+            }
+          }
+        },
+        "tags": [
+          "amazon_live"
+        ]
+      }
+    },
+    "/mcp/create_broadcast_media_asset": {
+      "post": {
+        "operationId": "create_broadcast_media_asset",
+        "description": "Create a media asset (thumbnail, sponsored image, HLS stream, MP4 video, or video clip) associated with an Amazon Live broadcast. Required: broadcastId, type, and at least one of content or metadata (either a binary upload or a metadata record must be supplied). Server assigns mediaAssetId, format, url, and version on creation. Use appropriate type: THUMBNAIL_IMAGE, SPONSORED_IMAGE, HLS_STREAM, MP4_VIDEO, VIDEO_CLIP.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/create_broadcast_media_assetInputSchema"
+              }
+            }
+          }
+        },
+        "tags": [
+          "amazon_live"
+        ]
+      }
+    },
+    "/mcp/list_promo_codes": {
+      "post": {
+        "operationId": "list_promo_codes",
+        "description": "List promotion codes associated with an Amazon Live broadcast. Returns promo code details including the code string, discount percentage, start/end times, and associated product IDs (ASINs). Use this to see what deals are offered during a broadcast.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/list_promo_codesInputSchema"
+              }
+            }
+          }
+        },
+        "tags": [
+          "amazon_live"
+        ]
+      }
+    },
+    "/mcp/update_channel": {
+      "post": {
+        "operationId": "update_channel",
+        "description": "Update an existing Amazon Live channel. Required: channelId. Only provided fields are modified; others remain unchanged. channelState, followers, featureFlags, and streamDetailIds are managed by the system and cannot be updated via this tool.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/update_channelInputSchema"
+              }
+            }
+          }
+        },
+        "tags": [
+          "amazon_live"
+        ]
+      }
+    },
+    "/mcp/update_promo_code": {
+      "post": {
+        "operationId": "update_promo_code",
+        "description": "Update an existing promo code association on an Amazon Live broadcast. Required: id. Only the associated promo code string and broadcast can be updated here; discount percentage, validity window, and product IDs are derived from the promotions system.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/update_promo_codeInputSchema"
+              }
+            }
+          }
+        },
+        "tags": [
+          "amazon_live"
+        ]
+      }
+    },
+    "/mcp/update_broadcast_media_asset": {
+      "post": {
+        "operationId": "update_broadcast_media_asset",
+        "description": "Update an existing broadcast media asset's metadata or content. Required: mediaAssetId. Only provided fields are modified. mediaAssetId, url, format, creationDateTime, and version are server-managed and immutable.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/update_broadcast_media_assetInputSchema"
+              }
+            }
+          }
+        },
+        "tags": [
+          "amazon_live"
+        ]
+      }
+    },
+    "/mcp/query_channels": {
+      "post": {
+        "operationId": "query_channels",
+        "description": "Query Amazon Live channels for a brand. Returns channel details including title, follower count, state (OFFLINE/PREVIEWING/LIVE), feature flags, and associated stream IDs. Use this to find channels owned by a brand.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/query_channelsInputSchema"
+              }
+            }
+          }
+        },
+        "tags": [
+          "amazon_live"
+        ]
+      }
+    },
+    "/mcp/retrieve_promo_code": {
+      "post": {
+        "operationId": "retrieve_promo_code",
+        "description": "Retrieve a specific promotion code by its id. Returns full promo code details including the code string, discount percentage, validity window, and associated product IDs.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/retrieve_promo_codeInputSchema"
+              }
+            }
+          }
+        },
+        "tags": [
+          "amazon_live"
+        ]
+      }
+    },
+    "/mcp/retrieve_channel": {
+      "post": {
+        "operationId": "retrieve_channel",
+        "description": "Retrieve a specific Amazon Live channel by its channelId. Returns full channel details including title, follower count, logo URL, state, feature flags, and associated stream detail IDs.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/retrieve_channelInputSchema"
+              }
+            }
+          }
+        },
+        "tags": [
+          "amazon_live"
+        ]
+      }
+    },
+    "/mcp/create_channel": {
+      "post": {
+        "operationId": "create_channel",
+        "description": "Create a new Amazon Live channel for a brand. A channel is the persistent home for a brand's livestreams. Required: title, brandId. Optional: brandAlternateIds, logoUrl. Returns the created channel with a server-assigned channelId and initial channelState (OFFLINE).",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/create_channelInputSchema"
+              }
+            }
+          }
+        },
+        "tags": [
+          "amazon_live"
+        ]
+      }
+    },
+    "/mcp/list_livestream_details": {
+      "post": {
+        "operationId": "list_livestream_details",
+        "description": "List livestream technical details (streaming infrastructure) for an Amazon Live channel. Returns ingest endpoint, ingest type (WEBRTC/RTMPS/SRT), preview URL, stream state (bitrate/resolution/frame rate), and validation status. Stream keys are NOT included in list responses. Use this to inspect the streaming setup for a channel.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/list_livestream_detailsInputSchema"
+              }
+            }
+          }
+        },
+        "tags": [
+          "amazon_live"
+        ]
+      }
+    },
+    "/mcp/query_broadcasts": {
+      "post": {
+        "operationId": "query_broadcasts",
+        "description": "Query Amazon Live broadcasts for a brand. Supports filtering by brand ID, brand alternate IDs, creation date range, and broadcast status (UNSCHEDULED, SCHEDULED, PRE_LIVE, LIVE, COMPLETED). Returns paginated broadcast details including title, status, scheduled times, and channel association. Use this to find broadcasts matching specific criteria.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/query_broadcastsInputSchema"
+              }
+            }
+          }
+        },
+        "tags": [
+          "amazon_live"
+        ]
+      }
+    },
+    "/mcp/list_channels": {
+      "post": {
+        "operationId": "list_channels",
+        "description": "List all Amazon Live channels for the current advertiser account. No filters required — returns all channels the advertiser has access to, including channelId, title, state (OFFLINE/PREVIEWING/LIVE), logo URL, and feature flags. Use this as the starting point to discover which channels exist before querying broadcasts or livestream details.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/list_channelsInputSchema"
+              }
+            }
+          }
+        },
+        "tags": [
+          "amazon_live"
+        ]
+      }
+    },
+    "/mcp/list_broadcast_media_assets": {
+      "post": {
+        "operationId": "list_broadcast_media_assets",
+        "description": "List media assets (thumbnails, sponsored images, HLS streams, MP4 videos, video clips) associated with an Amazon Live broadcast. Returns asset type, URL, format, and metadata such as dimensions, orientation, and duration.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/list_broadcast_media_assetsInputSchema"
+              }
+            }
+          }
+        },
+        "tags": [
+          "amazon_live"
+        ]
+      }
+    },
+    "/mcp/create_carousel_item": {
+      "post": {
+        "operationId": "create_carousel_item",
+        "description": "Create carousel items (products or landing pages) to be shown during an Amazon Live broadcast. Supports bulk create up to 45 items per call. Required per item: broadcastId, type (PRODUCT or CUSTOM), carouselMetadata. For PRODUCT type, provide ProductCarouselMetadata with productId (ASIN). For CUSTOM type, provide LandingPageCarouselMetadata with title and description; linkUrl and imageUrl are optional. Returns created items with server-assigned carouselItemIds.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/create_carousel_itemInputSchema"
+              }
+            }
+          }
+        },
+        "tags": [
+          "amazon_live"
+        ]
+      }
+    },
+    "/mcp/create_promo_code": {
+      "post": {
+        "operationId": "create_promo_code",
+        "description": "Associate a promotion code with an Amazon Live broadcast. The promo code string must already exist in the Amazon promotions system. Required: broadcastId, promoCode. The discount percentage, validity window, and associated product IDs are derived from the promo code in the promotions system and cannot be set directly here. Returns the created association with a server-assigned id.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/create_promo_codeInputSchema"
+              }
+            }
+          }
+        },
+        "tags": [
+          "amazon_live"
+        ]
+      }
+    },
+    "/mcp/retrieve_broadcast": {
+      "post": {
+        "operationId": "retrieve_broadcast",
+        "description": "Retrieve a specific Amazon Live broadcast by its broadcastId. Returns full broadcast details including status, scheduling, chat details, moderation events, carousel item IDs, media asset IDs, and promo code IDs. Use the dedicated list tools (list_carousel_items, list_broadcast_media_assets, list_promo_codes) to retrieve full details for these associated resources.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/retrieve_broadcastInputSchema"
+              }
+            }
+          }
+        },
+        "tags": [
+          "amazon_live"
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "list_broadcastsInputSchema": {
+        "type": "object",
+        "properties": {
+          "skill": {
+            "type": "object",
+            "description": "Do not auto-generate or infer values for this object. Only populate it when a skill definition explicitly provides the skillName and version to pass. If no skill definition is involved, omit this field entirely.",
+            "properties": {
+              "skillName": {
+                "type": "string"
+              },
+              "version": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "skillName",
+              "version"
+            ]
+          },
+          "body": {
+            "type": "object",
+            "properties": {
+              "accessRequestedAccount": {
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "profileId": {
+                        "type": "string",
+                        "description": "The identifier of a profile associated with the advertiser account. Use GET method on Profiles resource to list profiles associated with the access token passed in the HTTP Authorization header and choose profile id profileId from the response to pass it as input."
+                      }
+                    },
+                    "required": [
+                      "profileId"
+                    ]
+                  }
+                ]
+              }
+            },
+            "required": [
+              "accessRequestedAccount"
+            ]
+          },
+          "queryParameters": {
+            "type": "object",
+            "properties": {
+              "channelId": {
+                "type": "string"
+              },
+              "nextToken": {
+                "type": "string"
+              },
+              "maxResults": {
+                "type": "integer",
+                "default": 49,
+                "format": "int32",
+                "maximum": 49,
+                "minimum": 1
+              }
+            },
+            "required": [
+              "channelId"
+            ]
+          }
+        }
+      },
+      "delete_broadcastInputSchema": {
+        "type": "object",
+        "properties": {
+          "skill": {
+            "type": "object",
+            "description": "Do not auto-generate or infer values for this object. Only populate it when a skill definition explicitly provides the skillName and version to pass. If no skill definition is involved, omit this field entirely.",
+            "properties": {
+              "skillName": {
+                "type": "string"
+              },
+              "version": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "skillName",
+              "version"
+            ]
+          },
+          "body": {
+            "type": "object",
+            "properties": {
+              "broadcastIds": {
+                "type": "array",
+                "maxItems": 1,
+                "minItems": 1,
+                "items": {
+                  "type": "string"
+                }
+              },
+              "accessRequestedAccount": {
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "profileId": {
+                        "type": "string",
+                        "description": "The identifier of a profile associated with the advertiser account. Use GET method on Profiles resource to list profiles associated with the access token passed in the HTTP Authorization header and choose profile id profileId from the response to pass it as input."
+                      }
+                    },
+                    "required": [
+                      "profileId"
+                    ]
+                  }
+                ]
+              }
+            },
+            "required": [
+              "broadcastIds",
+              "accessRequestedAccount"
+            ]
+          }
+        }
+      },
+      "query_promo_codeInputSchema": {
+        "type": "object",
+        "properties": {
+          "skill": {
+            "type": "object",
+            "description": "Do not auto-generate or infer values for this object. Only populate it when a skill definition explicitly provides the skillName and version to pass. If no skill definition is involved, omit this field entirely.",
+            "properties": {
+              "skillName": {
+                "type": "string"
+              },
+              "version": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "skillName",
+              "version"
+            ]
+          },
+          "body": {
+            "type": "object",
+            "properties": {
+              "broadcastIdFilter": {
+                "type": "object",
+                "description": "Required filter. The broadcast ID context for validation.",
+                "properties": {
+                  "queryTermMatchType": {
+                    "type": "string",
+                    "enum": [
+                      "BROAD_MATCH"
+                    ]
+                  },
+                  "include": {
+                    "type": "array",
+                    "maxItems": 1,
+                    "minItems": 1,
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "required": [
+                  "include",
+                  "queryTermMatchType"
+                ]
+              },
+              "promoCodeFilter": {
+                "type": "object",
+                "description": "Required filter. Up to 10 promo code strings to validate.",
+                "properties": {
+                  "queryTermMatchType": {
+                    "type": "string",
+                    "enum": [
+                      "BROAD_MATCH"
+                    ]
+                  },
+                  "include": {
+                    "type": "array",
+                    "maxItems": 10,
+                    "minItems": 1,
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "required": [
+                  "include",
+                  "queryTermMatchType"
+                ]
+              },
+              "nextToken": {
+                "type": "string"
+              },
+              "maxResults": {
+                "type": "integer",
+                "default": 49,
+                "format": "int32",
+                "maximum": 49,
+                "minimum": 1
+              },
+              "accessRequestedAccount": {
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "profileId": {
+                        "type": "string",
+                        "description": "The identifier of a profile associated with the advertiser account. Use GET method on Profiles resource to list profiles associated with the access token passed in the HTTP Authorization header and choose profile id profileId from the response to pass it as input."
+                      }
+                    },
+                    "required": [
+                      "profileId"
+                    ]
+                  }
+                ]
+              }
+            },
+            "required": [
+              "broadcastIdFilter",
+              "promoCodeFilter",
+              "accessRequestedAccount"
+            ]
+          }
+        }
+      },
+      "list_carousel_itemsInputSchema": {
+        "type": "object",
+        "properties": {
+          "skill": {
+            "type": "object",
+            "description": "Do not auto-generate or infer values for this object. Only populate it when a skill definition explicitly provides the skillName and version to pass. If no skill definition is involved, omit this field entirely.",
+            "properties": {
+              "skillName": {
+                "type": "string"
+              },
+              "version": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "skillName",
+              "version"
+            ]
+          },
+          "body": {
+            "type": "object",
+            "properties": {
+              "accessRequestedAccount": {
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "profileId": {
+                        "type": "string",
+                        "description": "The identifier of a profile associated with the advertiser account. Use GET method on Profiles resource to list profiles associated with the access token passed in the HTTP Authorization header and choose profile id profileId from the response to pass it as input."
+                      }
+                    },
+                    "required": [
+                      "profileId"
+                    ]
+                  }
+                ]
+              }
+            },
+            "required": [
+              "accessRequestedAccount"
+            ]
+          },
+          "queryParameters": {
+            "type": "object",
+            "properties": {
+              "broadcastId": {
+                "type": "string"
+              },
+              "nextToken": {
+                "type": "string"
+              },
+              "maxResults": {
+                "type": "integer",
+                "default": 49,
+                "format": "int32",
+                "maximum": 49,
+                "minimum": 1
+              }
+            },
+            "required": [
+              "broadcastId"
+            ]
+          }
+        }
+      },
+      "create_broadcastInputSchema": {
+        "type": "object",
+        "properties": {
+          "skill": {
+            "type": "object",
+            "description": "Do not auto-generate or infer values for this object. Only populate it when a skill definition explicitly provides the skillName and version to pass. If no skill definition is involved, omit this field entirely.",
+            "properties": {
+              "skillName": {
+                "type": "string"
+              },
+              "version": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "skillName",
+              "version"
+            ]
+          },
+          "body": {
+            "type": "object",
+            "properties": {
+              "broadcasts": {
+                "type": "array",
+                "maxItems": 1,
+                "minItems": 1,
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "broadcastId": {
+                      "type": "string",
+                      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                      "description": "Server-assigned on create; present in response."
+                    },
+                    "channelId": {
+                      "type": "string",
+                      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                      "description": "Required. The channel ID this broadcast belongs to."
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "Required. Human-readable title for the broadcast."
+                    },
+                    "broadcastStatus": {
+                      "type": "string",
+                      "description": "Initial status assigned on create.",
+                      "enum": [
+                        "UNSCHEDULED",
+                        "SCHEDULED",
+                        "PRE_LIVE",
+                        "LIVE",
+                        "COMPLETED"
+                      ]
+                    },
+                    "scheduledStartDateTime": {
+                      "type": "string",
+                      "description": "Optional. ISO-8601 datetime when the broadcast is scheduled to start.",
+                      "format": "date-time"
+                    },
+                    "videoSource": {
+                      "type": "string",
+                      "description": "Optional. Video input source: PHONE_CAMERA, WEB_CAMERA, or THIRD_PARTY_ENCODER.",
+                      "enum": [
+                        "PHONE_CAMERA",
+                        "WEB_CAMERA",
+                        "THIRD_PARTY_ENCODER"
+                      ]
+                    },
+                    "streamingOrientation": {
+                      "type": "string",
+                      "description": "Optional. Stream orientation: HORIZONTAL, VERTICAL, or MULTI_ORIENTATION.",
+                      "enum": [
+                        "HORIZONTAL",
+                        "VERTICAL",
+                        "MULTI_ORIENTATION"
+                      ]
+                    },
+                    "isPractice": {
+                      "type": "boolean",
+                      "description": "Optional. If true, creates a practice (test) broadcast not visible to end viewers. Default false."
+                    },
+                    "includesDeals": {
+                      "type": "boolean",
+                      "description": "Optional. If true, broadcast includes deals/promotions."
+                    },
+                    "isPublic": {
+                      "type": "boolean",
+                      "description": "Optional. If true, broadcast is visible to all viewers. Default false."
+                    }
+                  },
+                  "required": [
+                    "broadcastId",
+                    "broadcastStatus",
+                    "channelId",
+                    "streamingOrientation",
+                    "title",
+                    "videoSource"
+                  ]
+                }
+              },
+              "accessRequestedAccount": {
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "profileId": {
+                        "type": "string",
+                        "description": "The identifier of a profile associated with the advertiser account. Use GET method on Profiles resource to list profiles associated with the access token passed in the HTTP Authorization header and choose profile id profileId from the response to pass it as input."
+                      }
+                    },
+                    "required": [
+                      "profileId"
+                    ]
+                  }
+                ]
+              }
+            },
+            "required": [
+              "broadcasts",
+              "accessRequestedAccount"
+            ]
+          }
+        }
+      },
+      "update_carousel_itemInputSchema": {
+        "type": "object",
+        "properties": {
+          "skill": {
+            "type": "object",
+            "description": "Do not auto-generate or infer values for this object. Only populate it when a skill definition explicitly provides the skillName and version to pass. If no skill definition is involved, omit this field entirely.",
+            "properties": {
+              "skillName": {
+                "type": "string"
+              },
+              "version": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "skillName",
+              "version"
+            ]
+          },
+          "body": {
+            "type": "object",
+            "properties": {
+              "carouselItems": {
+                "type": "array",
+                "maxItems": 45,
+                "minItems": 1,
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "carouselItemId": {
+                      "type": "string",
+                      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                      "description": "Required. The carousel item ID to update."
+                    },
+                    "broadcastId": {
+                      "type": "string",
+                      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                      "description": "The broadcast ID this carousel item belongs to. Not changeable."
+                    },
+                    "displayOrder": {
+                      "type": "integer",
+                      "description": "Optional. Updated display order.",
+                      "format": "int32"
+                    },
+                    "carouselMetadata": {
+                      "description": "Optional. Updated type-specific metadata.",
+                      "oneOf": [
+                        {
+                          "type": "object",
+                          "properties": {
+                            "productCarouselMetadata": {
+                              "type": "object",
+                              "properties": {
+                                "productId": {
+                                  "type": "string",
+                                  "description": "Optional. Updated Amazon product ID (ASIN) for PRODUCT type items."
+                                }
+                              }
+                            }
+                          },
+                          "required": [
+                            "productCarouselMetadata"
+                          ]
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "landingPageCarouselMetadata": {
+                              "type": "object",
+                              "properties": {
+                                "title": {
+                                  "type": "string",
+                                  "description": "Optional. Updated landing page title for CUSTOM type items."
+                                },
+                                "description": {
+                                  "type": "string",
+                                  "description": "Optional. Updated landing page description for CUSTOM type items."
+                                },
+                                "linkUrl": {
+                                  "type": "string",
+                                  "description": "Optional. Updated landing page target URL."
+                                },
+                                "imageUrl": {
+                                  "type": "string",
+                                  "description": "Optional. Updated landing page image URL."
+                                }
+                              }
+                            }
+                          },
+                          "required": [
+                            "landingPageCarouselMetadata"
+                          ]
+                        }
+                      ]
+                    },
+                    "isActive": {
+                      "type": "boolean",
+                      "description": "Optional. Set to false to hide the item without deleting."
+                    }
+                  },
+                  "required": [
+                    "carouselItemId"
+                  ]
+                }
+              },
+              "accessRequestedAccount": {
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "profileId": {
+                        "type": "string",
+                        "description": "The identifier of a profile associated with the advertiser account. Use GET method on Profiles resource to list profiles associated with the access token passed in the HTTP Authorization header and choose profile id profileId from the response to pass it as input."
+                      }
+                    },
+                    "required": [
+                      "profileId"
+                    ]
+                  }
+                ]
+              }
+            },
+            "required": [
+              "carouselItems",
+              "accessRequestedAccount"
+            ]
+          }
+        }
+      },
+      "update_broadcastInputSchema": {
+        "type": "object",
+        "properties": {
+          "skill": {
+            "type": "object",
+            "description": "Do not auto-generate or infer values for this object. Only populate it when a skill definition explicitly provides the skillName and version to pass. If no skill definition is involved, omit this field entirely.",
+            "properties": {
+              "skillName": {
+                "type": "string"
+              },
+              "version": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "skillName",
+              "version"
+            ]
+          },
+          "body": {
+            "type": "object",
+            "properties": {
+              "broadcasts": {
+                "type": "array",
+                "maxItems": 1,
+                "minItems": 1,
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "broadcastId": {
+                      "type": "string",
+                      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                      "description": "Required. The broadcast ID to update."
+                    },
+                    "channelId": {
+                      "type": "string",
+                      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                      "description": "The channel ID this broadcast belongs to. Not changeable."
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "Optional. New title for the broadcast."
+                    },
+                    "broadcastStatus": {
+                      "type": "string",
+                      "description": "Optional. CAUTION: New broadcast lifecycle status. Transitions to LIVE, COMPLETED are state-changing and may be irreversible.",
+                      "enum": [
+                        "UNSCHEDULED",
+                        "SCHEDULED",
+                        "PRE_LIVE",
+                        "LIVE",
+                        "COMPLETED"
+                      ]
+                    },
+                    "scheduledStartDateTime": {
+                      "type": "string",
+                      "description": "Optional. Updated scheduled start ISO-8601 datetime.",
+                      "format": "date-time"
+                    },
+                    "videoSource": {
+                      "type": "string",
+                      "description": "Optional. Updated video input source.",
+                      "enum": [
+                        "PHONE_CAMERA",
+                        "WEB_CAMERA",
+                        "THIRD_PARTY_ENCODER"
+                      ]
+                    },
+                    "streamingOrientation": {
+                      "type": "string",
+                      "description": "Optional. Updated stream orientation.",
+                      "enum": [
+                        "HORIZONTAL",
+                        "VERTICAL",
+                        "MULTI_ORIENTATION"
+                      ]
+                    },
+                    "includesDeals": {
+                      "type": "boolean",
+                      "description": "Optional. Updated deals flag."
+                    },
+                    "isPublic": {
+                      "type": "boolean",
+                      "description": "Optional. Updated visibility flag."
+                    }
+                  },
+                  "required": [
+                    "broadcastId"
+                  ]
+                }
+              },
+              "accessRequestedAccount": {
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "profileId": {
+                        "type": "string",
+                        "description": "The identifier of a profile associated with the advertiser account. Use GET method on Profiles resource to list profiles associated with the access token passed in the HTTP Authorization header and choose profile id profileId from the response to pass it as input."
+                      }
+                    },
+                    "required": [
+                      "profileId"
+                    ]
+                  }
+                ]
+              }
+            },
+            "required": [
+              "broadcasts",
+              "accessRequestedAccount"
+            ]
+          }
+        }
+      },
+      "create_broadcast_media_assetInputSchema": {
+        "type": "object",
+        "properties": {
+          "skill": {
+            "type": "object",
+            "description": "Do not auto-generate or infer values for this object. Only populate it when a skill definition explicitly provides the skillName and version to pass. If no skill definition is involved, omit this field entirely.",
+            "properties": {
+              "skillName": {
+                "type": "string"
+              },
+              "version": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "skillName",
+              "version"
+            ]
+          },
+          "body": {
+            "type": "object",
+            "properties": {
+              "broadcastMediaAssets": {
+                "type": "array",
+                "maxItems": 1,
+                "minItems": 1,
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "broadcastId": {
+                      "type": "string",
+                      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                      "description": "Required. The broadcast ID to attach the media asset to."
+                    },
+                    "type": {
+                      "type": "string",
+                      "description": "Thumbnail image which will be shown as a companion to the video",
+                      "enum": [
+                        "THUMBNAIL_IMAGE",
+                        "SPONSORED_IMAGE",
+                        "HLS_STREAM",
+                        "MP4_VIDEO",
+                        "VIDEO_CLIP"
+                      ]
+                    },
+                    "content": {
+                      "type": "string",
+                      "description": "Conditionally required (provide content or metadata, at minimum). Binary content of the asset (for uploads)."
+                    },
+                    "metadata": {
+                      "type": "object",
+                      "description": "Conditionally required (provide content or metadata, at minimum). Asset metadata - dimensions, orientation, duration.",
+                      "properties": {
+                        "orientation": {
+                          "type": "string",
+                          "description": "Optional. Asset orientation (HORIZONTAL/VERTICAL)."
+                        },
+                        "height": {
+                          "type": "integer",
+                          "description": "Optional. Height in pixels.",
+                          "format": "int32"
+                        },
+                        "width": {
+                          "type": "integer",
+                          "description": "Optional. Width in pixels.",
+                          "format": "int32"
+                        },
+                        "duration": {
+                          "type": "number",
+                          "description": "Optional. Duration in seconds (video assets only).",
+                          "format": "double"
+                        },
+                        "secondsTrimmedFromStart": {
+                          "type": "number",
+                          "description": "Optional. Seconds trimmed from the start (for clips).",
+                          "format": "double"
+                        }
+                      },
+                      "required": [
+                        "orientation"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "broadcastId",
+                    "type"
+                  ]
+                }
+              },
+              "accessRequestedAccount": {
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "profileId": {
+                        "type": "string",
+                        "description": "The identifier of a profile associated with the advertiser account. Use GET method on Profiles resource to list profiles associated with the access token passed in the HTTP Authorization header and choose profile id profileId from the response to pass it as input."
+                      }
+                    },
+                    "required": [
+                      "profileId"
+                    ]
+                  }
+                ]
+              }
+            },
+            "required": [
+              "broadcastMediaAssets",
+              "accessRequestedAccount"
+            ]
+          }
+        }
+      },
+      "list_promo_codesInputSchema": {
+        "type": "object",
+        "properties": {
+          "skill": {
+            "type": "object",
+            "description": "Do not auto-generate or infer values for this object. Only populate it when a skill definition explicitly provides the skillName and version to pass. If no skill definition is involved, omit this field entirely.",
+            "properties": {
+              "skillName": {
+                "type": "string"
+              },
+              "version": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "skillName",
+              "version"
+            ]
+          },
+          "body": {
+            "type": "object",
+            "properties": {
+              "accessRequestedAccount": {
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "profileId": {
+                        "type": "string",
+                        "description": "The identifier of a profile associated with the advertiser account. Use GET method on Profiles resource to list profiles associated with the access token passed in the HTTP Authorization header and choose profile id profileId from the response to pass it as input."
+                      }
+                    },
+                    "required": [
+                      "profileId"
+                    ]
+                  }
+                ]
+              }
+            },
+            "required": [
+              "accessRequestedAccount"
+            ]
+          },
+          "queryParameters": {
+            "type": "object",
+            "properties": {
+              "broadcastId": {
+                "type": "string"
+              },
+              "nextToken": {
+                "type": "string"
+              },
+              "maxResults": {
+                "type": "integer",
+                "default": 49,
+                "format": "int32",
+                "maximum": 49,
+                "minimum": 1
+              }
+            },
+            "required": [
+              "broadcastId"
+            ]
+          }
+        }
+      },
+      "update_channelInputSchema": {
+        "type": "object",
+        "properties": {
+          "skill": {
+            "type": "object",
+            "description": "Do not auto-generate or infer values for this object. Only populate it when a skill definition explicitly provides the skillName and version to pass. If no skill definition is involved, omit this field entirely.",
+            "properties": {
+              "skillName": {
+                "type": "string"
+              },
+              "version": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "skillName",
+              "version"
+            ]
+          },
+          "body": {
+            "type": "object",
+            "properties": {
+              "channels": {
+                "type": "array",
+                "maxItems": 1,
+                "minItems": 1,
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "channelId": {
+                      "type": "string",
+                      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                      "description": "Required. The channel ID to update."
+                    },
+                    "brandId": {
+                      "type": "string",
+                      "description": "Optional. Updated brand ID association."
+                    },
+                    "brandAlternateIds": {
+                      "type": "array",
+                      "description": "Optional. Updated alternate brand identifiers.",
+                      "maxItems": 10,
+                      "items": {
+                        "type": "object",
+                        "description": "Other types of brand identifiers for a brand that are used with other operations.",
+                        "properties": {
+                          "alternateBrandIdType": {
+                            "type": "string",
+                            "description": "The type of identifier for the alternate brand identifier.",
+                            "enum": [
+                              "BRAND_REGISTRY",
+                              "BRAND_ENTITY_ID",
+                              "BOOK_AUTHOR"
+                            ]
+                          },
+                          "alternateBrandId": {
+                            "type": "string",
+                            "description": "The alternative brand identifier for the brandId."
+                          },
+                          "countryCode": {
+                            "type": "string",
+                            "description": "The country where the alternate brand identifier is valid."
+                          }
+                        },
+                        "required": [
+                          "alternateBrandId",
+                          "alternateBrandIdType",
+                          "countryCode"
+                        ]
+                      }
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "Optional. New channel title."
+                    },
+                    "logoUrl": {
+                      "type": "string",
+                      "description": "Optional. Updated channel logo URL."
+                    }
+                  },
+                  "required": [
+                    "channelId"
+                  ]
+                }
+              },
+              "accessRequestedAccount": {
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "profileId": {
+                        "type": "string",
+                        "description": "The identifier of a profile associated with the advertiser account. Use GET method on Profiles resource to list profiles associated with the access token passed in the HTTP Authorization header and choose profile id profileId from the response to pass it as input."
+                      }
+                    },
+                    "required": [
+                      "profileId"
+                    ]
+                  }
+                ]
+              }
+            },
+            "required": [
+              "channels",
+              "accessRequestedAccount"
+            ]
+          }
+        }
+      },
+      "update_promo_codeInputSchema": {
+        "type": "object",
+        "properties": {
+          "skill": {
+            "type": "object",
+            "description": "Do not auto-generate or infer values for this object. Only populate it when a skill definition explicitly provides the skillName and version to pass. If no skill definition is involved, omit this field entirely.",
+            "properties": {
+              "skillName": {
+                "type": "string"
+              },
+              "version": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "skillName",
+              "version"
+            ]
+          },
+          "body": {
+            "type": "object",
+            "properties": {
+              "promoCodes": {
+                "type": "array",
+                "maxItems": 1,
+                "minItems": 1,
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                      "description": "Required. The promo code association ID to update."
+                    },
+                    "broadcastId": {
+                      "type": "string",
+                      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                      "description": "Optional. Reassociate with a different broadcast."
+                    },
+                    "promoCode": {
+                      "type": "string",
+                      "description": "Optional. Updated promo code string."
+                    }
+                  },
+                  "required": [
+                    "id"
+                  ]
+                }
+              },
+              "accessRequestedAccount": {
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "profileId": {
+                        "type": "string",
+                        "description": "The identifier of a profile associated with the advertiser account. Use GET method on Profiles resource to list profiles associated with the access token passed in the HTTP Authorization header and choose profile id profileId from the response to pass it as input."
+                      }
+                    },
+                    "required": [
+                      "profileId"
+                    ]
+                  }
+                ]
+              }
+            },
+            "required": [
+              "promoCodes",
+              "accessRequestedAccount"
+            ]
+          }
+        }
+      },
+      "update_broadcast_media_assetInputSchema": {
+        "type": "object",
+        "properties": {
+          "skill": {
+            "type": "object",
+            "description": "Do not auto-generate or infer values for this object. Only populate it when a skill definition explicitly provides the skillName and version to pass. If no skill definition is involved, omit this field entirely.",
+            "properties": {
+              "skillName": {
+                "type": "string"
+              },
+              "version": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "skillName",
+              "version"
+            ]
+          },
+          "body": {
+            "type": "object",
+            "properties": {
+              "broadcastMediaAssets": {
+                "type": "array",
+                "maxItems": 1,
+                "minItems": 1,
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "mediaAssetId": {
+                      "type": "string",
+                      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                      "description": "Required. The media asset ID to update."
+                    },
+                    "broadcastId": {
+                      "type": "string",
+                      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                      "description": "The broadcast ID this asset belongs to. Not changeable."
+                    },
+                    "type": {
+                      "type": "string",
+                      "description": "Optional. Updated asset type.",
+                      "enum": [
+                        "THUMBNAIL_IMAGE",
+                        "SPONSORED_IMAGE",
+                        "HLS_STREAM",
+                        "MP4_VIDEO",
+                        "VIDEO_CLIP"
+                      ]
+                    },
+                    "content": {
+                      "type": "string",
+                      "description": "Optional. Updated binary content (replaces existing)."
+                    },
+                    "metadata": {
+                      "type": "object",
+                      "description": "Optional. Updated metadata.",
+                      "properties": {
+                        "orientation": {
+                          "type": "string",
+                          "description": "Optional. Updated orientation."
+                        },
+                        "height": {
+                          "type": "integer",
+                          "description": "Optional. Updated height in pixels.",
+                          "format": "int32"
+                        },
+                        "width": {
+                          "type": "integer",
+                          "description": "Optional. Updated width in pixels.",
+                          "format": "int32"
+                        },
+                        "duration": {
+                          "type": "number",
+                          "description": "Optional. Updated duration in seconds.",
+                          "format": "double"
+                        },
+                        "secondsTrimmedFromStart": {
+                          "type": "number",
+                          "description": "Optional. Updated trim offset in seconds.",
+                          "format": "double"
+                        }
+                      }
+                    }
+                  },
+                  "required": [
+                    "mediaAssetId"
+                  ]
+                }
+              },
+              "accessRequestedAccount": {
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "profileId": {
+                        "type": "string",
+                        "description": "The identifier of a profile associated with the advertiser account. Use GET method on Profiles resource to list profiles associated with the access token passed in the HTTP Authorization header and choose profile id profileId from the response to pass it as input."
+                      }
+                    },
+                    "required": [
+                      "profileId"
+                    ]
+                  }
+                ]
+              }
+            },
+            "required": [
+              "broadcastMediaAssets",
+              "accessRequestedAccount"
+            ]
+          }
+        }
+      },
+      "query_channelsInputSchema": {
+        "type": "object",
+        "properties": {
+          "skill": {
+            "type": "object",
+            "description": "Do not auto-generate or infer values for this object. Only populate it when a skill definition explicitly provides the skillName and version to pass. If no skill definition is involved, omit this field entirely.",
+            "properties": {
+              "skillName": {
+                "type": "string"
+              },
+              "version": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "skillName",
+              "version"
+            ]
+          },
+          "body": {
+            "type": "object",
+            "properties": {
+              "brandAlternateIdsFilter": {
+                "type": "object",
+                "description": "Alternate brand identifiers (e.g., BRAND_ENTITY_ID) used for filtering channels.",
+                "properties": {
+                  "include": {
+                    "type": "array",
+                    "maxItems": 1,
+                    "minItems": 1,
+                    "items": {
+                      "type": "object",
+                      "description": "Other types of brand identifiers for a brand that are used with other operations.",
+                      "properties": {
+                        "alternateBrandIdType": {
+                          "type": "string",
+                          "description": "The type of identifier for the alternate brand identifier.",
+                          "enum": [
+                            "BRAND_REGISTRY",
+                            "BRAND_ENTITY_ID",
+                            "BOOK_AUTHOR"
+                          ]
+                        },
+                        "alternateBrandId": {
+                          "type": "string",
+                          "description": "The alternative brand identifier for the brandId."
+                        },
+                        "countryCode": {
+                          "type": "string",
+                          "description": "The country where the alternate brand identifier is valid."
+                        }
+                      },
+                      "required": [
+                        "alternateBrandId",
+                        "alternateBrandIdType",
+                        "countryCode"
+                      ]
+                    }
+                  }
+                },
+                "required": [
+                  "include"
+                ]
+              },
+              "brandIdFilter": {
+                "type": "object",
+                "description": "Internal brand ID to filter channels for a specific brand.",
+                "properties": {
+                  "queryTermMatchType": {
+                    "type": "string",
+                    "enum": [
+                      "BROAD_MATCH"
+                    ]
+                  },
+                  "include": {
+                    "type": "array",
+                    "maxItems": 1,
+                    "minItems": 1,
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "required": [
+                  "include",
+                  "queryTermMatchType"
+                ]
+              },
+              "nextToken": {
+                "type": "string"
+              },
+              "maxResults": {
+                "type": "integer",
+                "default": 1,
+                "format": "int32",
+                "maximum": 10,
+                "minimum": 1
+              },
+              "accessRequestedAccount": {
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "profileId": {
+                        "type": "string",
+                        "description": "The identifier of a profile associated with the advertiser account. Use GET method on Profiles resource to list profiles associated with the access token passed in the HTTP Authorization header and choose profile id profileId from the response to pass it as input."
+                      }
+                    },
+                    "required": [
+                      "profileId"
+                    ]
+                  }
+                ]
+              }
+            },
+            "required": [
+              "accessRequestedAccount"
+            ]
+          }
+        }
+      },
+      "retrieve_promo_codeInputSchema": {
+        "type": "object",
+        "properties": {
+          "skill": {
+            "type": "object",
+            "description": "Do not auto-generate or infer values for this object. Only populate it when a skill definition explicitly provides the skillName and version to pass. If no skill definition is involved, omit this field entirely.",
+            "properties": {
+              "skillName": {
+                "type": "string"
+              },
+              "version": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "skillName",
+              "version"
+            ]
+          },
+          "body": {
+            "type": "object",
+            "properties": {
+              "ids": {
+                "type": "array",
+                "maxItems": 1,
+                "minItems": 1,
+                "items": {
+                  "type": "string"
+                }
+              },
+              "accessRequestedAccount": {
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "profileId": {
+                        "type": "string",
+                        "description": "The identifier of a profile associated with the advertiser account. Use GET method on Profiles resource to list profiles associated with the access token passed in the HTTP Authorization header and choose profile id profileId from the response to pass it as input."
+                      }
+                    },
+                    "required": [
+                      "profileId"
+                    ]
+                  }
+                ]
+              }
+            },
+            "required": [
+              "ids",
+              "accessRequestedAccount"
+            ]
+          }
+        }
+      },
+      "retrieve_channelInputSchema": {
+        "type": "object",
+        "properties": {
+          "skill": {
+            "type": "object",
+            "description": "Do not auto-generate or infer values for this object. Only populate it when a skill definition explicitly provides the skillName and version to pass. If no skill definition is involved, omit this field entirely.",
+            "properties": {
+              "skillName": {
+                "type": "string"
+              },
+              "version": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "skillName",
+              "version"
+            ]
+          },
+          "body": {
+            "type": "object",
+            "properties": {
+              "channelIds": {
+                "type": "array",
+                "maxItems": 1,
+                "minItems": 1,
+                "items": {
+                  "type": "string"
+                }
+              },
+              "accessRequestedAccount": {
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "profileId": {
+                        "type": "string",
+                        "description": "The identifier of a profile associated with the advertiser account. Use GET method on Profiles resource to list profiles associated with the access token passed in the HTTP Authorization header and choose profile id profileId from the response to pass it as input."
+                      }
+                    },
+                    "required": [
+                      "profileId"
+                    ]
+                  }
+                ]
+              }
+            },
+            "required": [
+              "channelIds",
+              "accessRequestedAccount"
+            ]
+          }
+        }
+      },
+      "create_channelInputSchema": {
+        "type": "object",
+        "properties": {
+          "skill": {
+            "type": "object",
+            "description": "Do not auto-generate or infer values for this object. Only populate it when a skill definition explicitly provides the skillName and version to pass. If no skill definition is involved, omit this field entirely.",
+            "properties": {
+              "skillName": {
+                "type": "string"
+              },
+              "version": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "skillName",
+              "version"
+            ]
+          },
+          "body": {
+            "type": "object",
+            "properties": {
+              "channels": {
+                "type": "array",
+                "maxItems": 1,
+                "minItems": 1,
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "brandId": {
+                      "type": "string",
+                      "description": "Required. Internal brand ID this channel belongs to."
+                    },
+                    "brandAlternateIds": {
+                      "type": "array",
+                      "description": "Optional. Alternate brand identifiers (e.g., BRAND_ENTITY_ID).",
+                      "maxItems": 10,
+                      "items": {
+                        "type": "object",
+                        "description": "Other types of brand identifiers for a brand that are used with other operations.",
+                        "properties": {
+                          "alternateBrandIdType": {
+                            "type": "string",
+                            "description": "The type of identifier for the alternate brand identifier.",
+                            "enum": [
+                              "BRAND_REGISTRY",
+                              "BRAND_ENTITY_ID",
+                              "BOOK_AUTHOR"
+                            ]
+                          },
+                          "alternateBrandId": {
+                            "type": "string",
+                            "description": "The alternative brand identifier for the brandId."
+                          },
+                          "countryCode": {
+                            "type": "string",
+                            "description": "The country where the alternate brand identifier is valid."
+                          }
+                        },
+                        "required": [
+                          "alternateBrandId",
+                          "alternateBrandIdType",
+                          "countryCode"
+                        ]
+                      }
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "Required. Human-readable channel title displayed to viewers."
+                    },
+                    "logoUrl": {
+                      "type": "string",
+                      "description": "Optional. URL of the channel logo image."
+                    }
+                  },
+                  "required": [
+                    "title"
+                  ]
+                }
+              },
+              "accessRequestedAccount": {
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "profileId": {
+                        "type": "string",
+                        "description": "The identifier of a profile associated with the advertiser account. Use GET method on Profiles resource to list profiles associated with the access token passed in the HTTP Authorization header and choose profile id profileId from the response to pass it as input."
+                      }
+                    },
+                    "required": [
+                      "profileId"
+                    ]
+                  }
+                ]
+              }
+            },
+            "required": [
+              "channels",
+              "accessRequestedAccount"
+            ]
+          }
+        }
+      },
+      "list_livestream_detailsInputSchema": {
+        "type": "object",
+        "properties": {
+          "skill": {
+            "type": "object",
+            "description": "Do not auto-generate or infer values for this object. Only populate it when a skill definition explicitly provides the skillName and version to pass. If no skill definition is involved, omit this field entirely.",
+            "properties": {
+              "skillName": {
+                "type": "string"
+              },
+              "version": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "skillName",
+              "version"
+            ]
+          },
+          "body": {
+            "type": "object",
+            "properties": {
+              "accessRequestedAccount": {
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "profileId": {
+                        "type": "string",
+                        "description": "The identifier of a profile associated with the advertiser account. Use GET method on Profiles resource to list profiles associated with the access token passed in the HTTP Authorization header and choose profile id profileId from the response to pass it as input."
+                      }
+                    },
+                    "required": [
+                      "profileId"
+                    ]
+                  }
+                ]
+              }
+            },
+            "required": [
+              "accessRequestedAccount"
+            ]
+          },
+          "queryParameters": {
+            "type": "object",
+            "properties": {
+              "channelId": {
+                "type": "string"
+              },
+              "ingestType": {
+                "description": "Type of streaming protocol used",
+                "type": "string",
+                "enum": [
+                  "WEBRTC",
+                  "RTMPS",
+                  "SRT"
+                ]
+              },
+              "nextToken": {
+                "type": "string"
+              },
+              "maxResults": {
+                "type": "integer",
+                "default": 49,
+                "format": "int32",
+                "maximum": 49,
+                "minimum": 1
+              }
+            },
+            "required": [
+              "channelId"
+            ]
+          }
+        }
+      },
+      "query_broadcastsInputSchema": {
+        "type": "object",
+        "properties": {
+          "skill": {
+            "type": "object",
+            "description": "Do not auto-generate or infer values for this object. Only populate it when a skill definition explicitly provides the skillName and version to pass. If no skill definition is involved, omit this field entirely.",
+            "properties": {
+              "skillName": {
+                "type": "string"
+              },
+              "version": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "skillName",
+              "version"
+            ]
+          },
+          "body": {
+            "type": "object",
+            "properties": {
+              "brandAlternateIdsFilter": {
+                "type": "object",
+                "description": "Alternate brand identifiers (e.g., BRAND_ENTITY_ID) used for filtering broadcasts.",
+                "properties": {
+                  "include": {
+                    "type": "array",
+                    "maxItems": 1,
+                    "minItems": 1,
+                    "items": {
+                      "type": "object",
+                      "description": "Other types of brand identifiers for a brand that are used with other operations.",
+                      "properties": {
+                        "alternateBrandIdType": {
+                          "type": "string",
+                          "description": "The type of identifier for the alternate brand identifier.",
+                          "enum": [
+                            "BRAND_REGISTRY",
+                            "BRAND_ENTITY_ID",
+                            "BOOK_AUTHOR"
+                          ]
+                        },
+                        "alternateBrandId": {
+                          "type": "string",
+                          "description": "The alternative brand identifier for the brandId."
+                        },
+                        "countryCode": {
+                          "type": "string",
+                          "description": "The country where the alternate brand identifier is valid."
+                        }
+                      },
+                      "required": [
+                        "alternateBrandId",
+                        "alternateBrandIdType",
+                        "countryCode"
+                      ]
+                    }
+                  }
+                },
+                "required": [
+                  "include"
+                ]
+              },
+              "brandIdFilter": {
+                "type": "object",
+                "description": "Internal brand ID. Use to filter broadcasts for a specific brand.",
+                "properties": {
+                  "queryTermMatchType": {
+                    "type": "string",
+                    "enum": [
+                      "BROAD_MATCH"
+                    ]
+                  },
+                  "include": {
+                    "type": "array",
+                    "maxItems": 1,
+                    "minItems": 1,
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "required": [
+                  "include",
+                  "queryTermMatchType"
+                ]
+              },
+              "broadcastStatusFilter": {
+                "type": "object",
+                "description": "Filter by broadcast lifecycle status. Use EXACT_MATCH with values: UNSCHEDULED, SCHEDULED, PRE_LIVE, LIVE, COMPLETED.",
+                "properties": {
+                  "include": {
+                    "type": "array",
+                    "maxItems": 5,
+                    "minItems": 1,
+                    "items": {
+                      "type": "string",
+                      "description": "Filter by broadcast lifecycle status. Use EXACT_MATCH with values: UNSCHEDULED, SCHEDULED, PRE_LIVE, LIVE, COMPLETED.",
+                      "enum": [
+                        "UNSCHEDULED",
+                        "SCHEDULED",
+                        "PRE_LIVE",
+                        "LIVE",
+                        "COMPLETED"
+                      ]
+                    }
+                  }
+                },
+                "required": [
+                  "include"
+                ]
+              },
+              "creationDateTimeFilter": {
+                "type": "object",
+                "description": "Filter broadcasts by creation date/time range.",
+                "properties": {
+                  "queryTermMatchType": {
+                    "type": "string",
+                    "enum": [
+                      "BROAD_MATCH"
+                    ]
+                  },
+                  "include": {
+                    "type": "array",
+                    "maxItems": 1,
+                    "minItems": 1,
+                    "items": {
+                      "type": "string",
+                      "format": "date-time"
+                    }
+                  }
+                },
+                "required": [
+                  "include",
+                  "queryTermMatchType"
+                ]
+              },
+              "nextToken": {
+                "type": "string"
+              },
+              "maxResults": {
+                "type": "integer",
+                "default": 50,
+                "format": "int32",
+                "maximum": 100,
+                "minimum": 1
+              },
+              "accessRequestedAccount": {
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "profileId": {
+                        "type": "string",
+                        "description": "The identifier of a profile associated with the advertiser account. Use GET method on Profiles resource to list profiles associated with the access token passed in the HTTP Authorization header and choose profile id profileId from the response to pass it as input."
+                      }
+                    },
+                    "required": [
+                      "profileId"
+                    ]
+                  }
+                ]
+              }
+            },
+            "required": [
+              "creationDateTimeFilter",
+              "accessRequestedAccount"
+            ]
+          }
+        }
+      },
+      "list_channelsInputSchema": {
+        "type": "object",
+        "properties": {
+          "skill": {
+            "type": "object",
+            "description": "Do not auto-generate or infer values for this object. Only populate it when a skill definition explicitly provides the skillName and version to pass. If no skill definition is involved, omit this field entirely.",
+            "properties": {
+              "skillName": {
+                "type": "string"
+              },
+              "version": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "skillName",
+              "version"
+            ]
+          },
+          "body": {
+            "type": "object",
+            "properties": {
+              "accessRequestedAccount": {
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "profileId": {
+                        "type": "string",
+                        "description": "The identifier of a profile associated with the advertiser account. Use GET method on Profiles resource to list profiles associated with the access token passed in the HTTP Authorization header and choose profile id profileId from the response to pass it as input."
+                      }
+                    },
+                    "required": [
+                      "profileId"
+                    ]
+                  }
+                ]
+              }
+            },
+            "required": [
+              "accessRequestedAccount"
+            ]
+          },
+          "queryParameters": {
+            "type": "object",
+            "properties": {
+              "nextToken": {
+                "type": "string"
+              },
+              "maxResults": {
+                "type": "integer",
+                "default": 49,
+                "format": "int32",
+                "maximum": 49,
+                "minimum": 1
+              }
+            }
+          }
+        }
+      },
+      "list_broadcast_media_assetsInputSchema": {
+        "type": "object",
+        "properties": {
+          "skill": {
+            "type": "object",
+            "description": "Do not auto-generate or infer values for this object. Only populate it when a skill definition explicitly provides the skillName and version to pass. If no skill definition is involved, omit this field entirely.",
+            "properties": {
+              "skillName": {
+                "type": "string"
+              },
+              "version": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "skillName",
+              "version"
+            ]
+          },
+          "body": {
+            "type": "object",
+            "properties": {
+              "accessRequestedAccount": {
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "profileId": {
+                        "type": "string",
+                        "description": "The identifier of a profile associated with the advertiser account. Use GET method on Profiles resource to list profiles associated with the access token passed in the HTTP Authorization header and choose profile id profileId from the response to pass it as input."
+                      }
+                    },
+                    "required": [
+                      "profileId"
+                    ]
+                  }
+                ]
+              }
+            },
+            "required": [
+              "accessRequestedAccount"
+            ]
+          },
+          "queryParameters": {
+            "type": "object",
+            "properties": {
+              "broadcastId": {
+                "type": "string"
+              },
+              "nextToken": {
+                "type": "string"
+              },
+              "maxResults": {
+                "type": "integer",
+                "default": 49,
+                "format": "int32",
+                "maximum": 49,
+                "minimum": 1
+              }
+            },
+            "required": [
+              "broadcastId"
+            ]
+          }
+        }
+      },
+      "create_carousel_itemInputSchema": {
+        "type": "object",
+        "properties": {
+          "skill": {
+            "type": "object",
+            "description": "Do not auto-generate or infer values for this object. Only populate it when a skill definition explicitly provides the skillName and version to pass. If no skill definition is involved, omit this field entirely.",
+            "properties": {
+              "skillName": {
+                "type": "string"
+              },
+              "version": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "skillName",
+              "version"
+            ]
+          },
+          "body": {
+            "type": "object",
+            "properties": {
+              "carouselItems": {
+                "type": "array",
+                "maxItems": 45,
+                "minItems": 1,
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "broadcastId": {
+                      "type": "string",
+                      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                      "description": "Required. The broadcast ID the carousel items belong to."
+                    },
+                    "displayOrder": {
+                      "type": "integer",
+                      "description": "Optional. Display order within the carousel (lower numbers appear first).",
+                      "format": "int32"
+                    },
+                    "carouselMetadata": {
+                      "description": "Required. Type-specific metadata - ProductCarouselMetadata for PRODUCT, LandingPageCarouselMetadata for CUSTOM.",
+                      "oneOf": [
+                        {
+                          "type": "object",
+                          "properties": {
+                            "productCarouselMetadata": {
+                              "type": "object",
+                              "properties": {
+                                "productId": {
+                                  "type": "string",
+                                  "description": "Required for PRODUCT type. Amazon product ID (ASIN)."
+                                }
+                              },
+                              "required": [
+                                "productId"
+                              ]
+                            }
+                          },
+                          "required": [
+                            "productCarouselMetadata"
+                          ]
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "landingPageCarouselMetadata": {
+                              "type": "object",
+                              "properties": {
+                                "title": {
+                                  "type": "string",
+                                  "description": "Required for CUSTOM type. Landing page title displayed in carousel."
+                                },
+                                "description": {
+                                  "type": "string",
+                                  "description": "Required for CUSTOM type. Landing page short description."
+                                },
+                                "linkUrl": {
+                                  "type": "string",
+                                  "description": "Optional for CUSTOM type. Target URL when viewer taps the carousel item."
+                                },
+                                "imageUrl": {
+                                  "type": "string",
+                                  "description": "Optional for CUSTOM type. Display image URL."
+                                }
+                              },
+                              "required": [
+                                "description",
+                                "title"
+                              ]
+                            }
+                          },
+                          "required": [
+                            "landingPageCarouselMetadata"
+                          ]
+                        }
+                      ]
+                    },
+                    "isActive": {
+                      "type": "boolean",
+                      "description": "Optional. If true, item is visible in the carousel. Default false."
+                    }
+                  },
+                  "required": [
+                    "broadcastId",
+                    "carouselMetadata",
+                    "displayOrder",
+                    "isActive"
+                  ]
+                }
+              },
+              "accessRequestedAccount": {
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "profileId": {
+                        "type": "string",
+                        "description": "The identifier of a profile associated with the advertiser account. Use GET method on Profiles resource to list profiles associated with the access token passed in the HTTP Authorization header and choose profile id profileId from the response to pass it as input."
+                      }
+                    },
+                    "required": [
+                      "profileId"
+                    ]
+                  }
+                ]
+              }
+            },
+            "required": [
+              "carouselItems",
+              "accessRequestedAccount"
+            ]
+          }
+        }
+      },
+      "create_promo_codeInputSchema": {
+        "type": "object",
+        "properties": {
+          "skill": {
+            "type": "object",
+            "description": "Do not auto-generate or infer values for this object. Only populate it when a skill definition explicitly provides the skillName and version to pass. If no skill definition is involved, omit this field entirely.",
+            "properties": {
+              "skillName": {
+                "type": "string"
+              },
+              "version": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "skillName",
+              "version"
+            ]
+          },
+          "body": {
+            "type": "object",
+            "properties": {
+              "promoCodes": {
+                "type": "array",
+                "maxItems": 1,
+                "minItems": 1,
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "broadcastId": {
+                      "type": "string",
+                      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                      "description": "Required. The broadcast ID to associate the promo code with."
+                    },
+                    "promoCode": {
+                      "type": "string",
+                      "description": "Required. The promo code string (must exist in Amazon promotions)."
+                    }
+                  },
+                  "required": [
+                    "broadcastId",
+                    "promoCode"
+                  ]
+                }
+              },
+              "accessRequestedAccount": {
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "profileId": {
+                        "type": "string",
+                        "description": "The identifier of a profile associated with the advertiser account. Use GET method on Profiles resource to list profiles associated with the access token passed in the HTTP Authorization header and choose profile id profileId from the response to pass it as input."
+                      }
+                    },
+                    "required": [
+                      "profileId"
+                    ]
+                  }
+                ]
+              }
+            },
+            "required": [
+              "promoCodes",
+              "accessRequestedAccount"
+            ]
+          }
+        }
+      },
+      "retrieve_broadcastInputSchema": {
+        "type": "object",
+        "properties": {
+          "skill": {
+            "type": "object",
+            "description": "Do not auto-generate or infer values for this object. Only populate it when a skill definition explicitly provides the skillName and version to pass. If no skill definition is involved, omit this field entirely.",
+            "properties": {
+              "skillName": {
+                "type": "string"
+              },
+              "version": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "skillName",
+              "version"
+            ]
+          },
+          "body": {
+            "type": "object",
+            "properties": {
+              "broadcastIds": {
+                "type": "array",
+                "maxItems": 1,
+                "minItems": 1,
+                "items": {
+                  "type": "string"
+                }
+              },
+              "accessRequestedAccount": {
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "profileId": {
+                        "type": "string",
+                        "description": "The identifier of a profile associated with the advertiser account. Use GET method on Profiles resource to list profiles associated with the access token passed in the HTTP Authorization header and choose profile id profileId from the response to pass it as input."
+                      }
+                    },
+                    "required": [
+                      "profileId"
+                    ]
+                  }
+                ]
+              }
+            },
+            "required": [
+              "broadcastIds",
+              "accessRequestedAccount"
+            ]
+          }
+        }
+      }
+    }
+  }
+}

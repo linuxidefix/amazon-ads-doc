@@ -1,0 +1,491 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "billing",
+    "description": "MCP tools related to billing",
+    "version": "v1"
+  },
+  "paths": {
+    "/mcp/list_invoice_summaries": {
+      "post": {
+        "operationId": "list_invoice_summaries",
+        "description": "Lists billing invoice summaries in a global ads account. Supports filtering by date range, country, status, payment method, invoice number, and reserve order number. Also supports sorting and aggregation.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/list_invoice_summariesInputSchema"
+              }
+            }
+          }
+        },
+        "tags": [
+          "billing"
+        ]
+      }
+    },
+    "/mcp/query_billing_notifications": {
+      "post": {
+        "operationId": "query_billing_notifications",
+        "description": "This tool allows retrieving comprehensive billing notifications for Amazon advertising accounts. The tool provides a comprehensive set of billing-related notifications for an advertiser account, enabling advertisers to understand the billing status for their accounts. These notifications also cover various billing scenarios such as payment method issues, billing profile problems, account suspension related issues, tax registration status, payment failures etc. The notifications are aggregated by their type and  list the advertiserMarketplaces (i.e., the marketplaces/countries in which this notification is applicable), providing a consolidated view  of billing health across all regions where the advertiser operates. The tool provides three types of notifications based on severity: INFO (informational updates), WARNING (issues requiring attention), and ALERT (critical problems requiring immediate action).",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/query_billing_notificationsInputSchema"
+              }
+            }
+          }
+        },
+        "tags": [
+          "billing"
+        ]
+      }
+    },
+    "/mcp/list_invoices": {
+      "post": {
+        "operationId": "list_invoices",
+        "description": "This tool allows retrieving invoices for Amazon advertising accounts. The tool fetches invoices across an advertiser account, allowing an account to access comprehensive invoicing and charges summary. It provides detailed invoicing information for the account such as the invoice amounts, fees, due dates, the payment method for the invoice, payment terms, invoice status etc. It supports flexible filtering by start and end dates and the status of invoices.\nThe tool should be invoked without setting the invoiceStatuses parameter to fetch all invoices for an advertiser account. If just unpaid invoices or charges need to be fetched for the account, then the tool should be invoked with invoiceStatuses being ISSUED and PAID_IN_PART",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/list_invoicesInputSchema"
+              }
+            }
+          }
+        },
+        "tags": [
+          "billing"
+        ]
+      }
+    },
+    "/mcp/list_billing_profile_usages": {
+      "post": {
+        "operationId": "list_billing_profile_usages",
+        "description": "Lists the billing profiles linked to each country of a global ads account. Can filter by advertiser and optionally expand billing profile details.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/list_billing_profile_usagesInputSchema"
+              }
+            }
+          }
+        },
+        "tags": [
+          "billing"
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "list_invoice_summariesInputSchema": {
+        "type": "object",
+        "properties": {
+          "body": {
+            "type": "object",
+            "properties": {
+              "maxResults": {
+                "type": "integer",
+                "description": "Max results per page. Default 100."
+              },
+              "nextToken": {
+                "type": "string",
+                "description": "Offset to fetch next page of billing invoice summaries."
+              },
+              "invoiceIssuedDateRangeFilter": {
+                "type": "object",
+                "description": "Filter by invoice issued date range.",
+                "properties": {
+                  "startDate": {
+                    "type": "string",
+                    "description": "Start date (inclusive) in ISO-8601 date format (e.g. 2024-01-01)."
+                  },
+                  "endDate": {
+                    "type": "string",
+                    "description": "End date (inclusive) in ISO-8601 date format (e.g. 2024-12-31)."
+                  }
+                }
+              },
+              "invoiceDueDateRangeFilter": {
+                "type": "object",
+                "description": "Filter by invoice due date range.",
+                "properties": {
+                  "startDate": {
+                    "type": "string",
+                    "description": "Start date (inclusive) in ISO-8601 date format."
+                  },
+                  "endDate": {
+                    "type": "string",
+                    "description": "End date (inclusive) in ISO-8601 date format."
+                  }
+                }
+              },
+              "countryValueFilter": {
+                "type": "object",
+                "description": "Filter by country values.",
+                "properties": {
+                  "include": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "List of country values to filter by."
+                  },
+                  "queryTermMatchType": {
+                    "type": "string",
+                    "description": "Match type for the filter (exact or broad)."
+                  }
+                }
+              },
+              "statusValueFilter": {
+                "type": "object",
+                "description": "Filter by invoice status values.",
+                "properties": {
+                  "include": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "List of invoice status values to filter by."
+                  },
+                  "queryTermMatchType": {
+                    "type": "string",
+                    "description": "Match type for the filter."
+                  }
+                }
+              },
+              "paymentMethodTypeValueFilter": {
+                "type": "object",
+                "description": "Filter by payment method type.",
+                "properties": {
+                  "include": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "List of payment method types to filter by."
+                  },
+                  "queryTermMatchType": {
+                    "type": "string",
+                    "description": "Match type for the filter."
+                  }
+                }
+              },
+              "invoiceNumberFilter": {
+                "type": "object",
+                "description": "Filter by invoice numbers.",
+                "properties": {
+                  "include": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "List of invoice numbers to filter by."
+                  }
+                }
+              },
+              "reserveOrderNumberFilter": {
+                "type": "object",
+                "description": "Filter by reserve order numbers.",
+                "properties": {
+                  "include": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "List of reserve order numbers to filter by."
+                  }
+                }
+              },
+              "sort": {
+                "type": "object",
+                "description": "Sort configuration.",
+                "properties": {
+                  "attribute": {
+                    "type": "string",
+                    "description": "Sort key/attribute."
+                  },
+                  "direction": {
+                    "type": "string",
+                    "description": "Sort order: ascending or descending."
+                  }
+                }
+              },
+              "aggregation": {
+                "type": "object",
+                "description": "Aggregation query configuration.",
+                "properties": {
+                  "groupBy": {
+                    "type": "string",
+                    "description": "Aggregation bucket."
+                  },
+                  "attribute": {
+                    "type": "string",
+                    "description": "Aggregation attribute."
+                  },
+                  "operation": {
+                    "type": "string",
+                    "description": "Aggregate operation."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "required": [
+          "body"
+        ]
+      },
+      "query_billing_notificationsInputSchema": {
+        "type": "object",
+        "properties": {
+          "skill": {
+            "type": "object",
+            "description": "Do not auto-generate or infer values for this object. Only populate it when a skill definition explicitly provides the skillName and version to pass. If no skill definition is involved, omit this field entirely.",
+            "properties": {
+              "skillName": {
+                "type": "string"
+              },
+              "version": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "skillName",
+              "version"
+            ]
+          },
+          "body": {
+            "type": "object",
+            "description": "The properties needed to get the billing notifications for a set of advertisers.",
+            "properties": {
+              "accessRequestedAccount": {
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "advertiserAccountId": {
+                        "type": "string",
+                        "description": "The identifier of an Amazon Ads Advertiser Account."
+                      }
+                    },
+                    "required": [
+                      "advertiserAccountId"
+                    ]
+                  }
+                ]
+              },
+              "advertiserMarketplaces": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "advertiserId": {
+                      "type": "string"
+                    },
+                    "advertiserType": {
+                      "type": "string",
+                      "enum": [
+                        "AGENCY",
+                        "DSP_ADVERTISING_ACCOUNT",
+                        "SELLER",
+                        "VENDOR"
+                      ]
+                    },
+                    "marketplaceId": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "advertiserId",
+                    "marketplaceId"
+                  ]
+                }
+              },
+              "locale": {
+                "type": "string",
+                "enum": [
+                  "ar_AE",
+                  "bn_IN",
+                  "cs_CZ",
+                  "de_DE",
+                  "en_AE",
+                  "en_AU",
+                  "en_CA",
+                  "en_GB",
+                  "en_IN",
+                  "en_NG",
+                  "en_SG",
+                  "en_US",
+                  "en_ZA",
+                  "es_CL",
+                  "es_CO",
+                  "es_ES",
+                  "es_MX",
+                  "es_US",
+                  "fr_BE",
+                  "fr_CA",
+                  "fr_FR",
+                  "he_IL",
+                  "hi_IN",
+                  "it_IT",
+                  "ja_JP",
+                  "ko_KR",
+                  "ml_IN",
+                  "mr_IN",
+                  "nl_BE",
+                  "nl_NL",
+                  "pl_PL",
+                  "pt_BR",
+                  "pt_PT",
+                  "sv_SE",
+                  "ta_IN",
+                  "te_IN",
+                  "tr_TR",
+                  "zh_CN",
+                  "zh_TW"
+                ]
+              }
+            },
+            "required": [
+              "accessRequestedAccount"
+            ]
+          }
+        },
+        "required": [
+          "body"
+        ]
+      },
+      "list_invoicesInputSchema": {
+        "type": "object",
+        "properties": {
+          "skill": {
+            "type": "object",
+            "description": "Do not auto-generate or infer values for this object. Only populate it when a skill definition explicitly provides the skillName and version to pass. If no skill definition is involved, omit this field entirely.",
+            "properties": {
+              "skillName": {
+                "type": "string"
+              },
+              "version": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "skillName",
+              "version"
+            ]
+          },
+          "body": {
+            "type": "object",
+            "properties": {
+              "accessRequestedAccount": {
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "profileId": {
+                        "type": "string",
+                        "description": "The identifier of a profile associated with the advertiser account. Use GET method on Profiles resource to list profiles associated with the access token passed in the HTTP Authorization header and choose profile id profileId from the response to pass it as input."
+                      }
+                    },
+                    "required": [
+                      "profileId"
+                    ]
+                  }
+                ]
+              }
+            },
+            "required": [
+              "accessRequestedAccount"
+            ]
+          },
+          "queryParameters": {
+            "type": "object",
+            "properties": {
+              "invoiceStatuses": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "ISSUED",
+                    "PAID_IN_FULL",
+                    "PAID_IN_PART",
+                    "WRITTEN_OFF"
+                  ]
+                },
+                "description": "* `ISSUED`: An invoice is issued when its charges are finalized and tax is computed on the total amount. \n* `PAID_IN_PART`: When a partial payment is received, the invoice status will change to paid in part.\n* `PAID_IN_PART`: One full payment has been received, the invoice will be paid in full.\n* `WRITTEN_OFF`: If an invoice is written off because of an error, the status will be updated to written off.\n"
+              },
+              "startDate": {
+                "description": "The starting date (inclusive) of the date range for filtering invoices. Please provide the date in ISO-8601 format, representing a UTC date with only the date portion (no time)."
+              },
+              "endDate": {
+                "description": "The ending date (inclusive) of the date range for filtering invoices. Please provide the date in ISO-8601 format, representing a UTC date with only the date portion (no time)."
+              },
+              "count": {
+                "type": "integer",
+                "description": "Number of records to include in the paged response. Defaults to 100. Cannot be combined with the cursor parameter."
+              },
+              "cursor": {
+                "type": "string",
+                "description": "A cursor representing how far into a result set this query should begin. In the absence of a cursor the request will default to start index of 0 and page size of 100."
+              }
+            }
+          }
+        }
+      },
+      "list_billing_profile_usagesInputSchema": {
+        "type": "object",
+        "properties": {
+          "body": {
+            "type": "object",
+            "properties": {
+              "nextToken": {
+                "type": "string",
+                "description": "Offset to fetch next page of billing profile usages."
+              },
+              "maxResults": {
+                "type": "integer",
+                "description": "Max results per page. Default 100."
+              },
+              "filters": {
+                "type": "object",
+                "properties": {
+                  "advertiserFilter": {
+                    "type": "array",
+                    "description": "List of country or sellerOfRecord(sor) level filters for which billing profile usage details needs to be fetched.",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "countryCode": {
+                          "type": "string",
+                          "description": "Country code (e.g. US, UK, DE, JP)."
+                        }
+                      },
+                      "required": [
+                        "countryCode"
+                      ]
+                    }
+                  }
+                }
+              },
+              "expandBillingProfile": {
+                "type": "boolean",
+                "description": "Set true to include full billing profile content. Default false."
+              },
+              "expandFallbackBillingProfile": {
+                "type": "boolean",
+                "description": "Set true to include fallback billing profile[actually visible on the invoice] info. Default false."
+              }
+            }
+          }
+        },
+        "required": [
+          "body"
+        ]
+      }
+    }
+  }
+}

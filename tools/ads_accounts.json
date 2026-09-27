@@ -1,0 +1,140 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "ads_accounts",
+    "description": "MCP tools related to ads_accounts",
+    "version": "v1"
+  },
+  "paths": {
+    "/mcp/list_ads_accounts": {
+      "post": {
+        "operationId": "list_ads_accounts",
+        "description": "List all advertising accounts for the user associated with the access token.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/list_ads_accountsInputSchema"
+              }
+            }
+          }
+        },
+        "tags": [
+          "ads_accounts"
+        ]
+      }
+    },
+    "/mcp/create_ads_account": {
+      "post": {
+        "operationId": "create_ads_account",
+        "description": "Create a new advertising account tied to a specific Amazon vendor, seller or author, or to a business who does not sell on Amazon.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/create_ads_accountInputSchema"
+              }
+            }
+          }
+        },
+        "tags": [
+          "ads_accounts"
+        ]
+      }
+    },
+    "/mcp/get_ads_account": {
+      "post": {
+        "operationId": "get_ads_account",
+        "description": "Request attributes of a given advertising account.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/get_ads_accountInputSchema"
+              }
+            }
+          }
+        },
+        "tags": [
+          "ads_accounts"
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "list_ads_accountsInputSchema": {
+        "type": "object",
+        "properties": {
+          "body": {
+            "type": "object",
+            "properties": {
+              "maxResults": {
+                "type": "number",
+                "description": "Maximum number of results to return. Default is 100.",
+                "minimum": 1,
+                "maximum": 100
+              },
+              "nextToken": {
+                "type": "string",
+                "description": "Token used to fetch the next page of results if they exist."
+              }
+            }
+          }
+        }
+      },
+      "create_ads_accountInputSchema": {
+        "type": "object",
+        "properties": {
+          "body": {
+            "type": "object",
+            "properties": {
+              "accountName": {
+                "type": "string",
+                "description": "Account names are typically the name of the company or brand being advertised. Avoid using personal details such as first name, last name, phone number, or other personally identifiable information."
+              },
+              "associations": {
+                "type": "array",
+                "description": "Associations to link to this advertising account. Could be Amazon Vendor, Seller, or a regular business.",
+                "maxItems": 1,
+                "items": {
+                  "type": "object"
+                }
+              },
+              "countryCodes": {
+                "type": "array",
+                "description": "The countries that you want this account to operate in.",
+                "maxItems": 1,
+                "items": {
+                  "type": "string"
+                }
+              },
+              "termsToken": {
+                "type": "string",
+                "description": "Optional. An obfuscated identifier of the termsToken activated when an advertiser accepts the Amazon Ads Agreement. Not recommended as the system can determine acceptance automatically."
+              }
+            }
+          }
+        }
+      },
+      "get_ads_accountInputSchema": {
+        "type": "object",
+        "properties": {
+          "pathParameters": {
+            "type": "object",
+            "properties": {
+              "advertisingAccountId": {
+                "type": "string",
+                "description": "The global advertising account Id.",
+                "pattern": "^[A-Za-z0-9.-]+$"
+              }
+            },
+            "required": [
+              "advertisingAccountId"
+            ]
+          }
+        }
+      }
+    }
+  }
+}

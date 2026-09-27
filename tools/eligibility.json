@@ -1,0 +1,166 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "eligibility",
+    "description": "MCP tools related to eligibility",
+    "version": "v1"
+  },
+  "paths": {
+    "/mcp/programs": {
+      "post": {
+        "operationId": "programs",
+        "description": "Checks advertiser eligibility for ad programs (Sponsored Products, Sponsored Brands, Sponsored Display, Stores, etc).",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/programsInputSchema"
+              }
+            }
+          }
+        },
+        "tags": [
+          "eligibility"
+        ]
+      }
+    },
+    "/mcp/product_list": {
+      "post": {
+        "operationId": "product_list",
+        "description": "Gets advertising eligibility status for a list of products. Returns eligibility objects for products sold by the merchant associated with the profile. If a product is not eligible, includes reasons for ineligibility.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/product_listInputSchema"
+              }
+            }
+          }
+        },
+        "tags": [
+          "eligibility"
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "programsInputSchema": {
+        "type": "object",
+        "properties": {
+          "body": {
+            "type": "object",
+            "properties": {
+              "accessRequestedAccount": {
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "advertiserAccountId": {
+                        "type": "string",
+                        "description": "The identifier of an Amazon Ads Advertiser Account."
+                      }
+                    },
+                    "required": [
+                      "advertiserAccountId"
+                    ]
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "profileId": {
+                        "type": "string",
+                        "description": "The identifier of a profile associated with the advertiser account. Use GET method on Profiles resource to list profiles associated with the access token passed in the HTTP Authorization header and choose profile id profileId from the response to pass it as input."
+                      }
+                    },
+                    "required": [
+                      "profileId"
+                    ]
+                  }
+                ]
+              },
+              "skipChecks": {
+                "type": "object",
+                "description": "Optional checks to skip",
+                "properties": {
+                  "skipAllBillingChecks": {
+                    "type": "boolean",
+                    "description": "Skip all billing/payments/suspension checks"
+                  }
+                }
+              }
+            },
+            "required": [
+              "accessRequestedAccount"
+            ]
+          }
+        }
+      },
+      "product_listInputSchema": {
+        "type": "object",
+        "properties": {
+          "body": {
+            "type": "object",
+            "properties": {
+              "accessRequestedAccount": {
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "advertiserAccountId": {
+                        "type": "string",
+                        "description": "The identifier of an Amazon Ads Advertiser Account."
+                      }
+                    },
+                    "required": [
+                      "advertiserAccountId"
+                    ]
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "profileId": {
+                        "type": "string",
+                        "description": "The identifier of a profile associated with the advertiser account. Use GET method on Profiles resource to list profiles associated with the access token passed in the HTTP Authorization header and choose profile id profileId from the response to pass it as input."
+                      }
+                    },
+                    "required": [
+                      "profileId"
+                    ]
+                  }
+                ]
+              },
+              "productDetailsList": {
+                "type": "array",
+                "description": "List of product identifier objects (1-50 items).",
+                "minItems": 1,
+                "maxItems": 50,
+                "items": {
+                  "type": "object"
+                }
+              },
+              "adType": {
+                "type": "string",
+                "description": "Ad type to check eligibility for.",
+                "enum": [
+                  "sp",
+                  "sb",
+                  "sd",
+                  "dsp"
+                ]
+              },
+              "locale": {
+                "type": "string",
+                "description": "Locale for response language (e.g., en_US)."
+              }
+            },
+            "required": [
+              "accessRequestedAccount",
+              "productDetailsList"
+            ]
+          }
+        }
+      }
+    }
+  }
+}

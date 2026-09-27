@@ -1,0 +1,74 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "user_roles",
+    "description": "MCP tools related to user_roles",
+    "version": "v1"
+  },
+  "paths": {
+    "/mcp/list_user_roles": {
+      "post": {
+        "operationId": "list_user_roles",
+        "description": "Query roles for a specific user on an advertising account (e.g. { body: { accessRequestedAccount: { advertiserAccountId: \"<id>\" }, userId: \"<id>\" } }). Requires userId from users-list_users. Pass accessRequestedAccount in the body to specify the account. Returns role names and country scopes.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/list_user_rolesInputSchema"
+              }
+            }
+          }
+        },
+        "tags": [
+          "user_roles"
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "list_user_rolesInputSchema": {
+        "type": "object",
+        "properties": {
+          "body": {
+            "type": "object",
+            "properties": {
+              "accessRequestedAccount": {
+                "type": "object",
+                "description": "The advertiser account to perform the operation on.",
+                "properties": {
+                  "advertiserAccountId": {
+                    "type": "string",
+                    "description": "The identifier of an Amazon Ads Advertiser Account."
+                  }
+                }
+              },
+              "userId": {
+                "type": "string",
+                "description": "User ID to query roles for. Obtain from users-list_users.",
+                "maxLength": 150
+              },
+              "maxResults": {
+                "type": "number",
+                "description": "Max results for pagination (1-100).",
+                "minimum": 1,
+                "maximum": 100
+              },
+              "nextToken": {
+                "type": "string",
+                "description": "Pagination token for next page."
+              },
+              "countryCodesFilter": {
+                "type": "object",
+                "description": "Filter by country codes."
+              }
+            },
+            "required": [
+              "userId"
+            ]
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,91 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "terms_token",
+    "description": "MCP tools related to terms_token",
+    "version": "v1"
+  },
+  "paths": {
+    "/mcp/create_terms_token": {
+      "post": {
+        "operationId": "create_terms_token",
+        "description": "Create a new UUID terms token for the customer to accept advertising terms.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/create_terms_tokenInputSchema"
+              }
+            }
+          }
+        },
+        "tags": [
+          "terms_token"
+        ]
+      }
+    },
+    "/mcp/get_terms_token": {
+      "post": {
+        "operationId": "get_terms_token",
+        "description": "Get the terms token status for the customer.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/get_terms_tokenInputSchema"
+              }
+            }
+          }
+        },
+        "tags": [
+          "terms_token"
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "create_terms_tokenInputSchema": {
+        "type": "object",
+        "properties": {
+          "body": {
+            "type": "object",
+            "properties": {
+              "termsType": {
+                "type": "string",
+                "description": "Type of terms and conditions for different Amazon advertising platforms.",
+                "enum": [
+                  "ADSP",
+                  "ADVERTISING",
+                  "MARKETING_CLOUD",
+                  "PARTNER_NETWORK"
+                ]
+              },
+              "accountId": {
+                "type": "string",
+                "description": "Optional. A global advertising account ID (amzn1.ads-account.g.*) or manager account ID (amzn1.ads1.ma1.*) to associate with the terms token. When provided, the caller must have admin access to the account and termsType must be ADVERTISING. Allowlisted clients with accountId will have terms auto-accepted."
+              }
+            }
+          }
+        }
+      },
+      "get_terms_tokenInputSchema": {
+        "type": "object",
+        "properties": {
+          "pathParameters": {
+            "type": "object",
+            "properties": {
+              "termsToken": {
+                "type": "string",
+                "description": "A Terms Token refers to an UUID token used for terms and conditions acceptance."
+              }
+            },
+            "required": [
+              "termsToken"
+            ]
+          }
+        }
+      }
+    }
+  }
+}

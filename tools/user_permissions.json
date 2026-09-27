@@ -1,0 +1,170 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "user_permissions",
+    "description": "MCP tools related to user_permissions",
+    "version": "v1"
+  },
+  "paths": {
+    "/mcp/list_user_permissions": {
+      "post": {
+        "operationId": "list_user_permissions",
+        "description": "Query user permissions for a specific user on an advertising account. Pass accessRequestedAccount in the body to specify the account.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/list_user_permissionsInputSchema"
+              }
+            }
+          }
+        },
+        "tags": [
+          "user_permissions"
+        ]
+      }
+    },
+    "/mcp/delete_user_permissions": {
+      "post": {
+        "operationId": "delete_user_permissions",
+        "description": "Delete user permissions from an advertising account. Pass accessRequestedAccount in the body to specify the account.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/delete_user_permissionsInputSchema"
+              }
+            }
+          }
+        },
+        "tags": [
+          "user_permissions"
+        ]
+      }
+    },
+    "/mcp/update_user_permissions": {
+      "post": {
+        "operationId": "update_user_permissions",
+        "description": "Update user permissions for an advertising account. Pass accessRequestedAccount in the body to specify the account. First call user_permissions-list_user_permissions to get the current permission object structure, then pass { body: { accessRequestedAccount: { advertiserAccountId: \"<id>\" }, userPermissions: [...] } } with the updated objects.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/update_user_permissionsInputSchema"
+              }
+            }
+          }
+        },
+        "tags": [
+          "user_permissions"
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "list_user_permissionsInputSchema": {
+        "type": "object",
+        "properties": {
+          "body": {
+            "type": "object",
+            "properties": {
+              "accessRequestedAccount": {
+                "type": "object",
+                "description": "The advertiser account to perform the operation on.",
+                "properties": {
+                  "advertiserAccountId": {
+                    "type": "string",
+                    "description": "The identifier of an Amazon Ads Advertiser Account."
+                  }
+                }
+              },
+              "userId": {
+                "type": "string",
+                "description": "User ID for the request.",
+                "maxLength": 150
+              },
+              "maxResults": {
+                "type": "number",
+                "description": "Max results for pagination (1-100).",
+                "minimum": 1,
+                "maximum": 100
+              },
+              "nextToken": {
+                "type": "string",
+                "description": "Pagination token for next page."
+              },
+              "accessScopeFilter": {
+                "type": "object",
+                "description": "Filter by access scope."
+              },
+              "countryCodesFilter": {
+                "type": "object",
+                "description": "Filter by country codes."
+              }
+            },
+            "required": [
+              "userId"
+            ]
+          }
+        }
+      },
+      "delete_user_permissionsInputSchema": {
+        "type": "object",
+        "properties": {
+          "body": {
+            "type": "object",
+            "properties": {
+              "accessRequestedAccount": {
+                "type": "object",
+                "description": "The advertiser account to perform the operation on.",
+                "properties": {
+                  "advertiserAccountId": {
+                    "type": "string",
+                    "description": "The identifier of an Amazon Ads Advertiser Account."
+                  }
+                }
+              },
+              "users": {
+                "type": "array",
+                "description": "List of users to remove permissions for (1-200 items).",
+                "minItems": 1,
+                "maxItems": 200,
+                "items": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      },
+      "update_user_permissionsInputSchema": {
+        "type": "object",
+        "properties": {
+          "body": {
+            "type": "object",
+            "properties": {
+              "accessRequestedAccount": {
+                "type": "object",
+                "description": "The advertiser account to perform the operation on.",
+                "properties": {
+                  "advertiserAccountId": {
+                    "type": "string",
+                    "description": "The identifier of an Amazon Ads Advertiser Account."
+                  }
+                }
+              },
+              "userPermissions": {
+                "type": "array",
+                "description": "List of user permissions to update.",
+                "items": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
